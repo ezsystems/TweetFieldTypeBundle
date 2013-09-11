@@ -1,0 +1,10 @@
+parameters:
+    ezsystems.tweetbundle.fieldType.validator.tweet_url.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Validator\TweetUrl
+    ezsystems.tweetbundle.twitter.client.class: EzSystems\TweetFieldTypeBundle\Twitter\Client
+
+services:
+    ezsystems.tweetbundle.fieldType.validator.tweet_url:
+        class: %ezsystems.tweetbundle.fieldType.validator.tweet_url.class%
+
+    ezsystems.tweetbundle.twitter.client:
+        class: %ezsystems.tweetbundle.twitter.client.class%

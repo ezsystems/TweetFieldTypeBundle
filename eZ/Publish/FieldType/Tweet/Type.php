@@ -87,6 +87,8 @@ class Type extends FieldType
         }
         return array(
             'url' => $value->url,
+            'authorUrl' => $value->authorUrl,
+            'contents' => $value->contents
         );
     }
 
@@ -97,6 +99,7 @@ class Type extends FieldType
             return new PersistenceValue(
                 array(
                     "data" => null,
+                    "externalData" => null,
                     "sortKey" => null,
                 )
             );
@@ -105,6 +108,10 @@ class Type extends FieldType
         return new PersistenceValue(
             array(
                 "data" => $value->url,
+                "externalData" => array(
+                    'authorUrl' => $value->authorUrl,
+                    'contents' => $value->contents,
+                ),
                 "sortKey" => $this->getSortInfo( $value ),
             )
         );
@@ -129,6 +136,8 @@ class Type extends FieldType
         return new Value(
             array(
                 'url' => $fieldValue->data,
+                'authorUrl' => $fieldValue->externalData['authorUrl'],
+                'contents' => $fieldValue->externalData['contents'],
             )
         );
     }

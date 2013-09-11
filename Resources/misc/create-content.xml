@@ -16,8 +16,7 @@
         <field>
             <fieldDefinitionIdentifier>tweet</fieldDefinitionIdentifier>
             <languageCode>eng-GB</languageCode>
-            <!--fieldValue>https://twitter.com/bdunogier/status/355656801909350400</fieldValue-->
-            <fieldValue>https://google.com</fieldValue>
+            <fieldValue>https://twitter.com/bdunogier/status/355656801909350400</fieldValue>
         </field>
     </fields>
 </ContentCreate>

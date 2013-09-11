@@ -37,6 +37,11 @@ use eZ\Publish\SPI\Tests\FieldType\BaseIntegrationTest;
  */
 class TweetSPIIntegrationTest extends BaseIntegrationTest
 {
+    protected function getCustomSqlSchemaDir()
+    {
+        return __DIR__ . '/_fixtures/';
+    }
+
     /**
      * Get name of tested field type
      *
@@ -59,6 +64,14 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         $handler->getFieldTypeRegistry()->register(
             'eztweet',
             new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type()
+        );
+        $handler->getStorageRegistry()->register(
+            'eztweet',
+            new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage(
+                array(
+                    'LegacyStorage' => new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage\Gateway\Legacy()
+                )
+            )
         );
         $handler->getFieldValueConverterRegistry()->register(
             'eztweet',
@@ -104,6 +117,10 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         return new Content\FieldValue(
             array(
                 'data' => 'http://twitter.com/xxx/status/123545',
+                'externalData' => array(
+                    'authorUrl' => 'http://twitter.com/xxx',
+                    'contents' => 'blockQuote'
+                ),
                 'sortKey' => 'http://twitter.com/xxx/status/123545',
             )
         );
@@ -144,6 +161,10 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         return new Content\FieldValue(
             array(
                 'data' => 'http://twitter.com/yyyyy/status/54321',
+                'externalData' => array(
+                    'authorUrl' => 'http://twitter.com/yyy',
+                    'contents' => '<blockquote />'
+                ),
                 'sortKey' => 'http://twitter.com/yyyyy/status/54321',
             )
         );
