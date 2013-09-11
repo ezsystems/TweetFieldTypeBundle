@@ -1,0 +1,28 @@
+parameters:
+    ezsystems.tweetbundle.fieldType.eztweet.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type
+    ezsystems.tweetbundle.fieldType.eztweet.converter.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
+    ezsystems.tweetbundle.fieldType.eztweet.external_storage.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage
+    ezsystems.tweetbundle.fieldType.eztweet.storage_gateway.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage\Gateway\Legacy
+
+services:
+    ezsystems.tweetbundle.fieldType.eztweet:
+        parent: ezpublish.fieldType
+        class: %ezsystems.tweetbundle.fieldType.eztweet.class%
+        tags:
+            - {name: ezpublish.fieldType, alias: eztweet}
+
+    ezsystems.tweetbundle.fieldType.eztweet.converter:
+        class: %ezsystems.tweetbundle.fieldType.eztweet.converter.class%
+        tags:
+            - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
+
+    ezsystems.tweetbundle.fieldType.eztweet.external_storage:
+        class: %ezsystems.tweetbundle.fieldType.eztweet.external_storage.class%
+        arguments: [ [], @ezsystems.tweetbundle.twitter.client ]
+        tags:
+            - {name: ezpublish.fieldType.externalStorageHandler, alias: eztweet}
+
+    ezsystems.tweetbundle.fieldType.eztweet.storage_gateway:
+        class: %ezsystems.tweetbundle.fieldType.eztweet.storage_gateway.class%
+        tags:
+            - {name: ezpublish.fieldType.externalStorageHandler.gateway, alias: eztweet, identifier: LegacyStorage}
