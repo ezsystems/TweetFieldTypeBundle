@@ -9,6 +9,7 @@
 namespace EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 
 use eZ\Publish\Core\FieldType\FieldType;
+use eZ\Publish\Core\FieldType\ValidationError;
 use eZ\Publish\SPI\Persistence\Content\FieldValue as PersistenceValue;
 use eZ\Publish\Core\FieldType\Value as CoreValue;
 use eZ\Publish\SPI\FieldType\Value as SPIValue;
@@ -19,7 +20,13 @@ use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Validator\TweetUrl as Tw
 class Type extends FieldType
 {
     protected $validatorConfigurationSchema = array(
-        'TweetUrlValidator' => array()
+        'TweetUrlValidator' => array(),
+        'TweetAuthorValidator' => array(
+            'AuthorList' => array(
+                'type' => 'array',
+                'default' => array()
+            )
+        )
     );
 
     public function getFieldTypeIdentifier()
@@ -148,21 +155,27 @@ class Type extends FieldType
 
         foreach ( $validatorConfiguration as $validatorIdentifier => $constraints )
         {
-            if ( $validatorIdentifier !== 'TweetUrlValidator' )
+            // Report unknown validators
+            if ( !$validatorIdentifier != 'TweetAuthorValidator' )
             {
-                $validationErrors[] = new ValidationError(
-                    "Validator '%validator%' is unknown",
-                    null,
-                    array(
-                        "validator" => $validatorIdentifier
-                    )
-                );
-
+                $validationErrors[] = new ValidationError( "Validator '$validatorIdentifier' is unknown" );
                 continue;
             }
 
-            $validator = new TweetUrlValidator();
-            $validationErrors += $validator->validateConstraints( $constraints );
+            // Validate arguments from TweetAuthorValidator
+            if ( !isset( $constraints['AuthorList'] ) || !is_array( $constraints['AuthorList'] ) )
+            {
+                $validationErrors[] = new ValidationError( "Missing or invalid AuthorList argument" );
+                continue;
+            }
+
+            foreach ( $constraints['AuthorList'] as $authorName )
+            {
+                if ( !preg_match( '/^[a-z0-9_]{1,15}$/i', $authorName ) )
+                {
+                    $validationErrors[] = new ValidationError( "Invalid twitter username " );
+                }
+            }
         }
 
         return $validationErrors;
@@ -177,17 +190,23 @@ class Type extends FieldType
             return $errors;
         }
 
+        // Tweet Url validation
+        if ( !preg_match( '#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m ) )
+            $errors[] = new ValidationError( "Invalid twitter status url %url%", null, array( $fieldValue->url ) );
+
         $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
-        $constraints = isset( $validatorConfiguration['IpAddressValidator'] ) ?
-            $validatorConfiguration['IpAddressValidator'] :
-            array();
+        if ( isset( $validatorConfiguration['TweetAuthorValidator'] ) && !empty( $validatorConfiguration['TweetAuthorValidator'] ) )
+        {
+            if ( !in_array( $m[1], $validatorConfiguration['TweetAuthorValidator']['AuthorList'] ) )
+            {
+                $errors[] = new ValidationError(
+                    "Twitter user %user% is not in the approved author list",
+                    null,
+                    array( $m[1] )
+                );
+            }
+        }
 
-        $validator = new TweetUrlValidator();
-        $validator->initializeWithConstraints( $constraints );
-
-        if ( !$validator->validate( $fieldValue ) )
-            return $validator->getMessage();
-
-        return array();
+        return $errors;
     }
 }
