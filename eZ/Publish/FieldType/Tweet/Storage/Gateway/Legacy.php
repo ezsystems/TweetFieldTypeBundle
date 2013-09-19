@@ -91,36 +91,42 @@ class Legacy extends Gateway
     {
         $dbHandler = $this->getConnection();
 
+
+        // First, we get the URL
         $q = $dbHandler->createSelectQuery();
         $e = $q->expr;
-
-        $q->select( $q->alias( 'COUNT(*)', 'count') , 'data_text' )
+        $q->select( 'data_text' )
             ->from( $dbHandler->quoteTable( 'ezcontentobject_attribute' ) )
             ->where(
-                $e->eq(
-                    'sort_key_string',
-                    $q->subSelect()
-                        ->select( 'data_text' )
-                        ->from( $dbHandler->quoteTable( 'ezcontentobject_attribute' ) )
-                        ->where(
-                            $e->eq( "id", $q->bindValue( $fieldId ) )
-                        )
-                ),
+                $e->eq( "id", $q->bindValue( $fieldId ) )
+            );
+        $statement = $q->prepare();
+        $statement->execute();
+        $url = $statement->fetchColumn();
+
+        // We count how many rows other than $fieldId reference this tweet
+        $q = $dbHandler->createSelectQuery();
+        $q->select( 'COUNT(*)')
+            ->from( $dbHandler->quoteTable( 'ezcontentobject_attribute' ) )
+            ->where(
+                $e->eq( 'sort_key_string', $q->bindValue( $url ) ),
                 $e->neq( 'id', $q->bindValue( $fieldId ) )
             );
 
         $statement = $q->prepare();
         $statement->execute();
 
-        $row = $statement->fetch( \PDO::FETCH_ASSOC );
+        // If other ezcontentobject_attribute row references this tweet, we can stop right here
+        if ( (int)$statement->fetchColumn() > 0 )
+            return;
 
-        if ( (int)$row['count'] > 0 )
-        {
-            echo "No more records, deleting";
-            $q = $dbHandler->createDeleteQuery();
-            $q->deleteFrom( self::TABLE )
-                ->where( $q->expr->eq( 'url', $q->bindValue( $rows['url'] ) ) );
-        }
+        $q = $dbHandler->createDeleteQuery();
+        $q->deleteFrom( self::TABLE )
+            ->where(
+                $q->expr->eq( 'url', $q->bindValue( $url ) )
+            );
+        $statement = $q->prepare();
+        $statement->execute();
     }
 
     /**

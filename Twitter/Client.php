@@ -12,7 +12,6 @@ class Client implements ClientInterface
 {
     public function getEmbed( $statusUrl )
     {
-        echo __METHOD__ . "\n";
         $parts = explode( '/', $statusUrl );
 
         $response = file_get_contents(
@@ -21,7 +20,6 @@ class Client implements ClientInterface
         );
 
         $data = json_decode( $response, true );
-        print_r( $data );
         return $data['html'];
     }
 
