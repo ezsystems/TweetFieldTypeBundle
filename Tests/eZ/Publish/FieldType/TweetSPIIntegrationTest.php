@@ -37,6 +37,11 @@ use eZ\Publish\SPI\Tests\FieldType\BaseIntegrationTest;
  */
 class TweetSPIIntegrationTest extends BaseIntegrationTest
 {
+    /**
+     * @var \EzSystems\TweetFieldTypeBundle\Twitter\ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $twitterClientMock;
+
     protected function getCustomSqlSchemaDir()
     {
         return __DIR__ . '/_fixtures/';
@@ -70,7 +75,8 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
             new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage(
                 array(
                     'LegacyStorage' => new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage\Gateway\Legacy()
-                )
+                ),
+                $this->getTwitterClientMock()
             )
         );
         $handler->getFieldValueConverterRegistry()->register(
@@ -194,5 +200,15 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         $this->assertNotNull(
             $field->value->data
         );
+    }
+
+    /**
+     * @return \EzSystems\TweetFieldTypeBundle\Twitter\ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getTwitterClientMock()
+    {
+        if ( !isset( $this->twitterClientMock ) )
+            $this->twitterClientMock = $this->getMock( 'EzSystems\\TweetFieldTypeBundle\\Twitter\\ClientInterface' );
+        return $this->twitterClientMock;
     }
 }

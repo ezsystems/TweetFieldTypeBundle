@@ -44,7 +44,7 @@ class Type extends FieldType
 
     protected function getSortInfo( CoreValue $value )
     {
-        return $this->getName( $value );
+        return (string)$value->url;
     }
 
     protected function createValueFromInput( $inputValue )

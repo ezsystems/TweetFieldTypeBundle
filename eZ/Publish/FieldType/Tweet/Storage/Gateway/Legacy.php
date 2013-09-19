@@ -79,7 +79,8 @@ class Legacy extends Gateway
     /**
      * Deletes the tweet referenced by $fieldId in $versionNo
      *
-     * Will only delete if this field was the only one referencing the tweet.
+     * The method will first query the database for other ezcontentobject_attribute records that reference
+     * the same tweet as $fieldId, and will only delete the entry if there are none.
      *
      * @param mixed $fieldId
      * @param int   $versionNumber
@@ -90,12 +91,36 @@ class Legacy extends Gateway
     {
         $dbHandler = $this->getConnection();
 
-        // check other fields
+        $q = $dbHandler->createSelectQuery();
+        $e = $q->expr;
 
+        $q->select( $q->alias( 'COUNT(*)', 'count') , 'data_text' )
+            ->from( $dbHandler->quoteTable( 'ezcontentobject_attribute' ) )
+            ->where(
+                $e->eq(
+                    'sort_key_string',
+                    $q->subSelect()
+                        ->select( 'data_text' )
+                        ->from( $dbHandler->quoteTable( 'ezcontentobject_attribute' ) )
+                        ->where(
+                            $e->eq( "id", $q->bindValue( $fieldId ) )
+                        )
+                ),
+                $e->neq( 'id', $q->bindValue( $fieldId ) )
+            );
 
-        /*$q = $dbHandler->createDeleteQuery();
-        $q->deleteFrom( self::TABLE )
-          ->where( $q->expr->eq( 'url', $q->bindValue( $tweetUrl ) ) );*/
+        $statement = $q->prepare();
+        $statement->execute();
+
+        $row = $statement->fetch( \PDO::FETCH_ASSOC );
+
+        if ( (int)$row['count'] > 0 )
+        {
+            echo "No more records, deleting";
+            $q = $dbHandler->createDeleteQuery();
+            $q->deleteFrom( self::TABLE )
+                ->where( $q->expr->eq( 'url', $q->bindValue( $rows['url'] ) ) );
+        }
     }
 
     /**

@@ -30,10 +30,12 @@ class LegacyConverter implements Converter
 
     public function toStorageFieldDefinition( FieldDefinition $fieldDef, StorageFieldDefinition $storageDef )
     {
+        // @todo implement me
     }
 
     public function toFieldDefinition( StorageFieldDefinition $storageDef, FieldDefinition $fieldDef )
     {
+        // @todo implement me
     }
 
     /**

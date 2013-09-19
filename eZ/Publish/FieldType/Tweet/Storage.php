@@ -11,7 +11,7 @@ namespace EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 use eZ\Publish\Core\FieldType\GatewayBasedStorage;
 use eZ\Publish\SPI\Persistence\Content\Field;
 use eZ\Publish\SPI\Persistence\Content\VersionInfo;
-use EzSystems\TweetFieldTypeBundle\Twitter\Client as TwitterClient;
+use EzSystems\TweetFieldTypeBundle\Twitter\ClientInterface as TwitterClientInterface;
 
 class Storage extends GatewayBasedStorage
 {
@@ -20,7 +20,7 @@ class Storage extends GatewayBasedStorage
      */
     private $twitterClient;
 
-    public function __construct( array $gateways = array(), TwitterClient $twitterClient )
+    public function __construct( array $gateways = array(), TwitterClientInterface $twitterClient )
     {
         $this->twitterClient = $twitterClient;
         parent::__construct( $gateways );
@@ -46,8 +46,6 @@ class Storage extends GatewayBasedStorage
             $field->value->externalData['authorUrl'] = $this->twitterClient->getAuthor( $field->value->data );
             $field->value->externalData['contents'] = $this->twitterClient->getEmbed( $field->value->data );
         }
-
-        print_r( $field->value->externalData );
 
         $gateway = $this->getGateway( $context );
         $gateway->storeTweet(

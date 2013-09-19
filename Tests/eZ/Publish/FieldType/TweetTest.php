@@ -20,7 +20,15 @@ class TweetTest extends FieldTypeTest
 
     protected function getValidatorConfigurationSchemaExpectation()
     {
-        return array();
+        return array(
+            'TweetUrlValidator' => array(),
+            'TweetAuthorValidator' => array(
+                'AuthorList' => array(
+                    'type' => 'array',
+                    'default' => array()
+                )
+            )
+        );
     }
 
     protected function getSettingsSchemaExpectation()

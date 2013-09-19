@@ -37,4 +37,3 @@ abstract class Gateway extends StorageGateway
      */
     abstract public function deleteTweet( $fieldId, $versionNumber );
 }
-
