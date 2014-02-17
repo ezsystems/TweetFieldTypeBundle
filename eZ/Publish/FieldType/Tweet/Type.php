@@ -114,11 +114,7 @@ class Type extends FieldType
 
         return new PersistenceValue(
             array(
-                "data" => $value->url,
-                "externalData" => array(
-                    'authorUrl' => $value->authorUrl,
-                    'contents' => $value->contents,
-                ),
+                "data" => $this->toHash( $value ),
                 "sortKey" => $this->getSortInfo( $value ),
             )
         );
