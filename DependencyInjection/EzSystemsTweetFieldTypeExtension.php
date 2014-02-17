@@ -14,6 +14,12 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class EzSystemsTweetFieldTypeExtension extends Extension
 {
+    public function prepend( ContainerBuilder $container )
+    {
+        $config = Yaml::parse( __DIR__ . '/../Resources/config/fieldtype.yml' );
+        $container->prependExtensionConfig( 'ezpublish', $config );
+    }
+
     /**
      * {@inheritDoc}
      */

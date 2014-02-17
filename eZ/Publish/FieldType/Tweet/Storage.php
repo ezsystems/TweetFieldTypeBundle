@@ -35,19 +35,33 @@ class Storage extends GatewayBasedStorage
         $field->value->externalData = $gateway->getTweet( $field->value->data );
     }
 
+    /**
+     * Stores external data for a tweet.
+     *
+     * If the stored tweet doesn't exist in our external storage, we fetch the missing info
+     * using the twitter client API.
+     */
     public function storeFieldData( VersionInfo $versionInfo, Field $field, array $context )
     {
         if ( $field->value->data == null )
             return;
 
+        $gateway = $this->getGateway( $context );
+
         // get embed data from twitter service here
         if ( !$field->value->externalData['contents'] )
         {
+            // This tweet is already in our external storage,  we can reuse the data and return
+            if ( ( $tweetData = $gateway->getTweet( $field->value->data ) ) != false )
+            {
+                $field->value->externalData = $tweetData;
+                return;
+            }
+
             $field->value->externalData['authorUrl'] = $this->twitterClient->getAuthor( $field->value->data );
             $field->value->externalData['contents'] = $this->twitterClient->getEmbed( $field->value->data );
         }
 
-        $gateway = $this->getGateway( $context );
         $gateway->storeTweet(
             $field->value->data,
             $field->value->externalData['authorUrl'],

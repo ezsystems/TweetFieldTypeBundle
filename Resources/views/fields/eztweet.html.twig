@@ -1,0 +1,9 @@
+{% block eztweet_field %}
+{% spaceless %}
+    {% set field_value %}
+        <a href="{{ field.value.authorUrl }}">@{{ field.author }}</a>:
+        <a href="{{ field.value.url }}">{{ field.value.url }}</a>
+    {% endset %}
+    {{ block( 'simple_block_field' ) }}
+{% endspaceless %}
+{% endblock %}

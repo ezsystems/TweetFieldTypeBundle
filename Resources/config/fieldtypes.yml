@@ -16,13 +16,13 @@ services:
         tags:
             - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
 
-    ezsystems.tweetbundle.fieldType.eztweet.external_storage:
-        class: %ezsystems.tweetbundle.fieldType.eztweet.external_storage.class%
-        arguments: [ [], @ezsystems.tweetbundle.twitter.client ]
-        tags:
-            - {name: ezpublish.fieldType.externalStorageHandler, alias: eztweet}
-
-    ezsystems.tweetbundle.fieldType.eztweet.storage_gateway:
-        class: %ezsystems.tweetbundle.fieldType.eztweet.storage_gateway.class%
-        tags:
-            - {name: ezpublish.fieldType.externalStorageHandler.gateway, alias: eztweet, identifier: LegacyStorage}
+#    ezsystems.tweetbundle.fieldType.eztweet.external_storage:
+#        class: %ezsystems.tweetbundle.fieldType.eztweet.external_storage.class%
+#        arguments: [ [], @ezsystems.tweetbundle.twitter.client ]
+#        tags:
+#            - {name: ezpublish.fieldType.externalStorageHandler, alias: eztweet}
+#
+#    ezsystems.tweetbundle.fieldType.eztweet.storage_gateway:
+#        class: %ezsystems.tweetbundle.fieldType.eztweet.storage_gateway.class%
+#        tags:
+#            - {name: ezpublish.fieldType.externalStorageHandler.gateway, alias: eztweet, identifier: LegacyStorage}
