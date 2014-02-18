@@ -8,15 +8,17 @@
  */
 namespace EzSystems\TweetFieldTypeBundle\Twitter;
 
-class Client implements ClientInterface
+class TwitterClient implements TwitterClientInterface
 {
     public function getEmbed( $statusUrl )
     {
         $parts = explode( '/', $statusUrl );
 
         $response = file_get_contents(
-            'https://api.twitter.com/1/statuses/oembed.json?id=133640144317198338&align=center',
-            $parts[5]
+            sprintf(
+                'https://api.twitter.com/1/statuses/oembed.json?id=%s&align=center',
+                $parts[5]
+            )
         );
 
         $data = json_decode( $response, true );

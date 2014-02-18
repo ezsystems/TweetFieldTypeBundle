@@ -1,8 +1,9 @@
+{% extends "EzPublishCoreBundle::content_fields.html.twig" %}
+
 {% block eztweet_field %}
 {% spaceless %}
     {% set field_value %}
-        <a href="{{ field.value.authorUrl }}">@{{ field.author }}</a>:
-        <a href="{{ field.value.url }}">{{ field.value.url }}</a>
+        {{ field.value.contents|raw }}
     {% endset %}
     {{ block( 'simple_block_field' ) }}
 {% endspaceless %}

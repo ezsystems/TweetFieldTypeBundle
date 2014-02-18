@@ -18,13 +18,13 @@ class LegacyConverter implements Converter
 {
     public function toStorageValue( FieldValue $value, StorageFieldValue $storageFieldValue )
     {
-        $storageFieldValue->dataText = $value->data;
+        $storageFieldValue->dataText = json_encode( $value->data );
         $storageFieldValue->sortKeyString = $value->sortKey;
     }
 
     public function toFieldValue( StorageFieldValue $value, FieldValue $fieldValue )
     {
-        $fieldValue->data = $value->dataText;
+        $fieldValue->data = json_decode( $value->dataText, true );
         $fieldValue->sortKey = $value->sortKeyString;
     }
 

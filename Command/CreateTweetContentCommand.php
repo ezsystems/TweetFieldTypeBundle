@@ -32,10 +32,10 @@ class CreateTweetContentCommand extends ContainerAwareCommand
 
         // Content create struct
         $createStruct = $contentService->newContentCreateStruct(
-            $repository->getContentTypeService()->loadContentTypeByIdentifier( 'folder' ),
+            $repository->getContentTypeService()->loadContentTypeByIdentifier( 'tweet' ),
             'eng-GB'
         );
-        $createStruct->setField( 'name', 'A folder', 'eng-GB' );
+        $createStruct->setField( 'tweet', 'https://twitter.com/bdunogier/status/435763219555037184', 'eng-GB' );
 
         try
         {
@@ -44,7 +44,7 @@ class CreateTweetContentCommand extends ContainerAwareCommand
                 array( $repository->getLocationService()->newLocationCreateStruct( 2 ) )
             );
             $content = $contentService->publishVersion( $contentDraft->versionInfo );
-            $output->writeln( "Created Content 'folder' with ID {$content->id}" );
+            $output->writeln( "Created Content 'tweet' with ID {$content->id}" );
         }
         catch ( \Exception $e )
         {

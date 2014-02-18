@@ -8,7 +8,7 @@
  */
 namespace EzSystems\TweetFieldTypeBundle\Twitter;
 
-interface ClientInterface
+interface TwitterClientInterface
 {
     /**
      * Returns the embed version of a tweet from its $url

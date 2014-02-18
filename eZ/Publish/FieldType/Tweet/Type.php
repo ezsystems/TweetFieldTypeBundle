@@ -16,9 +16,13 @@ use eZ\Publish\SPI\FieldType\Value as SPIValue;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Validator\TweetUrl as TweetUrlValidator;
+use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
 
 class Type extends FieldType
 {
+    /** @var TwitterClientInterface */
+    protected $twitterClient;
+
     protected $validatorConfigurationSchema = array(
         'TweetUrlValidator' => array(),
         'TweetAuthorValidator' => array(
@@ -29,6 +33,11 @@ class Type extends FieldType
         )
     );
 
+    public function __construct( TwitterClientInterface $twitterClient )
+    {
+        $this->twitterClient = $twitterClient;
+    }
+
     public function getFieldTypeIdentifier()
     {
         return 'eztweet';
@@ -36,7 +45,7 @@ class Type extends FieldType
 
     public function getName( SPIValue $value )
     {
-        if ( !preg_match( '#^https?://twitter\.com/([^/]+/status/[0-9]+)$#', (string)$value->url, $matches ) )
+        if ( !preg_match( '#^https?://twitter\.com/([^/]+/status/[0-9]+)$#', (string)$value, $matches ) )
             return '';
 
         return str_replace( '/', '-', $matches[1] );
@@ -99,6 +108,11 @@ class Type extends FieldType
         );
     }
 
+    /**
+     * @param Value $value
+     *
+     * @return PersistenceValue
+     */
     public function toPersistenceValue( SPIValue $value )
     {
         if ( $value === null )
@@ -110,6 +124,11 @@ class Type extends FieldType
                     "sortKey" => null,
                 )
             );
+        }
+
+        if ( $value->contents === null )
+        {
+            $value->contents = $this->twitterClient->getEmbed( $value->url );
         }
 
         return new PersistenceValue(
@@ -127,7 +146,7 @@ class Type extends FieldType
      *
      * @param \eZ\Publish\SPI\Persistence\Content\FieldValue $fieldValue
      *
-     * @return \eZ\Publish\Core\FieldType\Url\Value
+     * @return \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value
      */
     public function fromPersistenceValue( PersistenceValue $fieldValue )
     {
@@ -136,13 +155,7 @@ class Type extends FieldType
             return $this->getEmptyValue();
         }
 
-        return new Value(
-            array(
-                'url' => $fieldValue->data,
-                'authorUrl' => $fieldValue->externalData['authorUrl'],
-                'contents' => $fieldValue->externalData['contents'],
-            )
-        );
+        return new Value( $fieldValue->data );
     }
 
     public function validateValidatorConfiguration( $validatorConfiguration )

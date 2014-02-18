@@ -1,5 +1,5 @@
 parameters:
-    ezsystems.tweetbundle.twitter.client.class: EzSystems\TweetFieldTypeBundle\Twitter\Client
+    ezsystems.tweetbundle.twitter.client.class: EzSystems\TweetFieldTypeBundle\Twitter\TwitterClient
 
 services:
     ezsystems.tweetbundle.twitter.client:
