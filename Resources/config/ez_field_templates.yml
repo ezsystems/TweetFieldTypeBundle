@@ -1,0 +1,4 @@
+system:
+    global:
+        field_templates:
+            - {template: EzSystemsTweetFieldTypeBundle:fields:eztweet.html.twig, priority: 0}

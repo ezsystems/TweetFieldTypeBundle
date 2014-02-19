@@ -16,7 +16,4 @@ interface TwitterClientInterface
      * @return string
      */
     public function getEmbed( $statusUrl );
-
-    public function getAuthor( $statusUrl );
 }
- 

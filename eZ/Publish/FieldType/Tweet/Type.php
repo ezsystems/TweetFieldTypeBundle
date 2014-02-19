@@ -15,7 +15,6 @@ use eZ\Publish\Core\FieldType\Value as CoreValue;
 use eZ\Publish\SPI\FieldType\Value as SPIValue;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
-use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Validator\TweetUrl as TweetUrlValidator;
 use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
 
 class Type extends FieldType
