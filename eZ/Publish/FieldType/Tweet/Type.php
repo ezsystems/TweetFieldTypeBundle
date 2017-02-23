@@ -135,7 +135,7 @@ class Type extends FieldType implements FieldValueFormMapperInterface
             );
         }
 
-        if ( $value->contents === null )
+        if ( $value->url )
         {
             $value->contents = $this->twitterClient->getEmbed( $value->url );
         }
@@ -174,25 +174,29 @@ class Type extends FieldType implements FieldValueFormMapperInterface
         foreach ( $validatorConfiguration as $validatorIdentifier => $constraints )
         {
             // Report unknown validators
-            if ( !$validatorIdentifier != 'TweetAuthorValidator' )
+            if ( $validatorIdentifier == 'TweetAuthorValidator' )
+            {
+                // Validate arguments from TweetAuthorValidator
+                if ( !isset( $constraints['AuthorList'] ) || !is_array( $constraints['AuthorList'] ) )
+                {
+                    $validationErrors[] = new ValidationError( "Missing or invalid AuthorList argument" );
+                    continue;
+                }
+
+                foreach ( $constraints['AuthorList'] as $authorName )
+                {
+                    if ( !preg_match( '/^[a-z0-9_]{1,15}$/i', $authorName ) )
+                    {
+                        $validationErrors[] = new ValidationError( "Invalid twitter username " );
+                    }
+                }
+            } elseif ( $validatorIdentifier == 'TweetUrlValidator' )
+            {
+
+            }
+            else
             {
                 $validationErrors[] = new ValidationError( "Validator '$validatorIdentifier' is unknown" );
-                continue;
-            }
-
-            // Validate arguments from TweetAuthorValidator
-            if ( !isset( $constraints['AuthorList'] ) || !is_array( $constraints['AuthorList'] ) )
-            {
-                $validationErrors[] = new ValidationError( "Missing or invalid AuthorList argument" );
-                continue;
-            }
-
-            foreach ( $constraints['AuthorList'] as $authorName )
-            {
-                if ( !preg_match( '/^[a-z0-9_]{1,15}$/i', $authorName ) )
-                {
-                    $validationErrors[] = new ValidationError( "Invalid twitter username " );
-                }
             }
         }
 
