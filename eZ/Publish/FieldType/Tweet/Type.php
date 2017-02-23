@@ -8,6 +8,7 @@
 
 namespace EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 
+use eZ\Publish\API\Repository\FieldTypeService;
 use eZ\Publish\Core\FieldType\FieldType;
 use eZ\Publish\Core\FieldType\ValidationError;
 use eZ\Publish\SPI\Persistence\Content\FieldValue as PersistenceValue;
@@ -15,12 +16,21 @@ use eZ\Publish\Core\FieldType\Value as CoreValue;
 use eZ\Publish\SPI\FieldType\Value as SPIValue;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
+use EzSystems\RepositoryForms\Data\Content\FieldData;
+use EzSystems\RepositoryForms\FieldType\FieldValueFormMapperInterface;
 use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormInterface;
 
-class Type extends FieldType
+class Type extends FieldType implements FieldValueFormMapperInterface
 {
     /** @var TwitterClientInterface */
     protected $twitterClient;
+
+    /**
+     * @var \eZ\Publish\API\Repository\FieldTypeService
+     */
+    private $fieldTypeService;
 
     protected $validatorConfigurationSchema = array(
         'TweetUrlValidator' => array(),
@@ -31,10 +41,10 @@ class Type extends FieldType
             )
         )
     );
-
-    public function __construct( TwitterClientInterface $twitterClient )
+    public function __construct( TwitterClientInterface $twitterClient, FieldTypeService $fieldTypeService )
     {
         $this->twitterClient = $twitterClient;
+        $this->fieldTypeService = $fieldTypeService;
     }
 
     public function getFieldTypeIdentifier()
@@ -216,5 +226,30 @@ class Type extends FieldType
         }
 
         return $errors;
+    }
+
+    /**
+     * Maps Field form to current FieldType.
+     * Allows to add form fields for content edition.
+     *
+     * @param FormInterface $form Form for the current Field.
+     * @param FieldData $data Underlying data for current Field form.
+     */
+    public function mapFieldValueForm(FormInterface $form, FieldData $data)
+    {
+        $fieldDefinition = $data->fieldDefinition;
+        $formConfig = $form->getConfig();
+        $names = $fieldDefinition->getNames();
+        $label = $fieldDefinition->getName($formConfig->getOption('languageCode')) ?: reset($names);
+
+        $form->add(
+            'value',
+            TextType::class,
+            [
+                'required' => $data->fieldDefinition->isRequired,
+                'label' => $label,
+                'property_path' => 'value.url',
+            ]
+        );
     }
 }
