@@ -44,10 +44,11 @@ class Type extends FieldType
 
     public function getName( SPIValue $value )
     {
-        if ( !preg_match( '#^https?://twitter\.com/([^/]+/status/[0-9]+)$#', (string)$value, $matches ) )
-            return '';
-
-        return str_replace( '/', '-', $matches[1] );
+        return preg_replace(
+            '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
+            '$1-$2',
+            (string)$value->url
+        );
     }
 
     protected function getSortInfo( CoreValue $value )

@@ -13,9 +13,14 @@ use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value as TweetValu
 
 class TweetTest extends FieldTypeTest
 {
+    /**
+     * @var \EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $twitterClientMock;
+
     protected function createFieldTypeUnderTest()
     {
-        return new TweetType;
+        return new TweetType($this->getTwitterClientMock());
     }
 
     protected function getValidatorConfigurationSchemaExpectation()
@@ -150,5 +155,41 @@ class TweetTest extends FieldTypeTest
                 ),
             )
         );
+    }
+
+    protected function provideFieldTypeIdentifier()
+    {
+        return 'eztweet';
+    }
+
+    public function provideDataForGetName()
+    {
+        return array(
+            array($this->getEmptyValueExpectation(), ''),
+            array(new TweetValue('https://twitter.com/user/status/123456789'), 'user-123456789'),
+        );
+    }
+
+    /**
+     * @return \EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getTwitterClientMock()
+    {
+        if (!isset($this->twitterClientMock)) {
+            $this->twitterClientMock = $this->getMock('EzSystems\\TweetFieldTypeBundle\\Twitter\\TwitterClientInterface');
+        }
+        return $this->twitterClientMock;
+    }
+
+    public function provideValidDataForValidate()
+    {
+        // @todo implement me
+        return array();
+    }
+
+    public function provideInvalidDataForValidate()
+    {
+        // @todo implement me
+        return array();
     }
 }

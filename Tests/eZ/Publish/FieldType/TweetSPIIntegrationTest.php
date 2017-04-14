@@ -9,11 +9,11 @@
 
 namespace EzSystems\TweetFieldTypeBundle\Tests\eZ\Publish\FieldType;
 
-use eZ\Publish\Core\Persistence\Legacy;
 use eZ\Publish\Core\FieldType;
 use eZ\Publish\SPI\Persistence\Content;
-use eZ\Publish\SPI\Persistence\Content\Field;
+use eZ\Publish\SPI\Persistence\Handler;
 use eZ\Publish\SPI\Tests\FieldType\BaseIntegrationTest;
+use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 
 /**
  * SPI Integration test for legacy storage field types
@@ -38,14 +38,9 @@ use eZ\Publish\SPI\Tests\FieldType\BaseIntegrationTest;
 class TweetSPIIntegrationTest extends BaseIntegrationTest
 {
     /**
-     * @var \EzSystems\TweetFieldTypeBundle\Twitter\ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $twitterClientMock;
-
-    protected function getCustomSqlSchemaDir()
-    {
-        return __DIR__ . '/_fixtures/';
-    }
 
     /**
      * Get name of tested field type
@@ -64,27 +59,15 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
      */
     public function getCustomHandler()
     {
-        $handler = $this->getHandler();
+        $fieldType = new Tweet\Type($this->getTwitterClientMock());
+        $fieldType->setTransformationProcessor($this->getTransformationProcessor());
 
-        $handler->getFieldTypeRegistry()->register(
+        return $this->getHandler(
             'eztweet',
-            new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type()
+            $fieldType,
+            new Tweet\LegacyConverter(),
+            new FieldType\NullStorage()
         );
-        $handler->getStorageRegistry()->register(
-            'eztweet',
-            new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage(
-                array(
-                    'LegacyStorage' => new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Storage\Gateway\Legacy()
-                ),
-                $this->getTwitterClientMock()
-            )
-        );
-        $handler->getFieldValueConverterRegistry()->register(
-            'eztweet',
-            new \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter()
-        );
-
-        return $handler;
     }
 
     /**
@@ -123,35 +106,9 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         return new Content\FieldValue(
             array(
                 'data' => 'http://twitter.com/xxx/status/123545',
-                'externalData' => array(
-                    'authorUrl' => 'http://twitter.com/xxx',
-                    'contents' => 'blockQuote'
-                ),
+                'externalData' => null,
                 'sortKey' => 'http://twitter.com/xxx/status/123545',
             )
-        );
-    }
-
-    /**
-     * Asserts that the loaded field data is correct
-     *
-     * Performs assertions on the loaded field, mainly checking that the
-     * $field->value->externalData is loaded correctly. If the loading of
-     * external data manipulates other aspects of $field, their correctness
-     * also needs to be asserted. Make sure you implement this method agnostic
-     * to the used SPI\Persistence implementation!
-     */
-    public function assertLoadedFieldDataCorrect( Field $field )
-    {
-        $expected = $this->getInitialValue();
-
-        $this->assertEquals(
-            $expected->externalData,
-            $field->value->externalData
-        );
-
-        $this->assertNotNull(
-            $field->value->data
         );
     }
 
@@ -167,48 +124,20 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
         return new Content\FieldValue(
             array(
                 'data' => 'http://twitter.com/yyyyy/status/54321',
-                'externalData' => array(
-                    'authorUrl' => 'http://twitter.com/yyy',
-                    'contents' => '<blockquote />'
-                ),
+                'externalData' => null,
                 'sortKey' => 'http://twitter.com/yyyyy/status/54321',
             )
         );
     }
 
     /**
-     * Asserts that the updated field data is loaded correct
-     *
-     * Performs assertions on the loaded field after it has been updated,
-     * mainly checking that the $field->value->externalData is loaded
-     * correctly. If the loading of external data manipulates other aspects of
-     * $field, their correctness also needs to be asserted. Make sure you
-     * implement this method agnostic to the used SPI\Persistence
-     * implementation!
-     *
-     * @return void
-     */
-    public function assertUpdatedFieldDataCorrect( Field $field )
-    {
-        $expected = $this->getUpdatedValue();
-
-        $this->assertEquals(
-            $expected->externalData,
-            $field->value->externalData
-        );
-
-        $this->assertNotNull(
-            $field->value->data
-        );
-    }
-
-    /**
-     * @return \EzSystems\TweetFieldTypeBundle\Twitter\ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return \EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getTwitterClientMock()
     {
-        if ( !isset( $this->twitterClientMock ) )
-            $this->twitterClientMock = $this->getMock( 'EzSystems\\TweetFieldTypeBundle\\Twitter\\ClientInterface' );
+        if (!isset($this->twitterClientMock)) {
+            $this->twitterClientMock = $this->getMock('EzSystems\\TweetFieldTypeBundle\\Twitter\\TwitterClientInterface');
+        }
         return $this->twitterClientMock;
     }
 }
