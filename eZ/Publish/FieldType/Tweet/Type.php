@@ -32,7 +32,7 @@ class Type extends FieldType
         )
     );
 
-    public function __construct( TwitterClientInterface $twitterClient )
+    public function __construct(TwitterClientInterface $twitterClient)
     {
         $this->twitterClient = $twitterClient;
     }
@@ -42,7 +42,7 @@ class Type extends FieldType
         return 'eztweet';
     }
 
-    public function getName( SPIValue $value )
+    public function getName(SPIValue $value)
     {
         return preg_replace(
             '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
@@ -51,25 +51,23 @@ class Type extends FieldType
         );
     }
 
-    protected function getSortInfo( CoreValue $value )
+    protected function getSortInfo(CoreValue $value)
     {
         return (string)$value->url;
     }
 
-    protected function createValueFromInput( $inputValue )
+    protected function createValueFromInput($inputValue)
     {
-        if ( is_string( $inputValue ) )
-        {
-            $inputValue = new Value( array( 'url' => $inputValue ) );
+        if (is_string($inputValue)) {
+            $inputValue = new Value(array('url' => $inputValue));
         }
 
         return $inputValue;
     }
 
-    protected function checkValueStructure( CoreValue $value )
+    protected function checkValueStructure(CoreValue $value)
     {
-        if ( !is_string( $value->url ) )
-        {
+        if (!is_string($value->url)) {
             throw new InvalidArgumentType(
                 '$value->text',
                 'string',
@@ -83,24 +81,24 @@ class Type extends FieldType
         return new Value;
     }
 
-    public function fromHash( $hash )
+    public function fromHash($hash)
     {
-        if ( $hash === null )
-        {
+        if ($hash === null) {
             return $this->getEmptyValue();
         }
-        return new Value( $hash );
+
+        return new Value($hash);
     }
 
     /**
      * @param $value Value
      */
-    public function toHash( SPIValue $value )
+    public function toHash(SPIValue $value)
     {
-        if ( $this->isEmptyValue( $value ) )
-        {
+        if ($this->isEmptyValue($value)) {
             return null;
         }
+
         return array(
             'url' => $value->url,
             'authorUrl' => $value->authorUrl,
@@ -113,10 +111,9 @@ class Type extends FieldType
      *
      * @return PersistenceValue
      */
-    public function toPersistenceValue( SPIValue $value )
+    public function toPersistenceValue(SPIValue $value)
     {
-        if ( $value === null )
-        {
+        if ($value === null) {
             return new PersistenceValue(
                 array(
                     "data" => null,
@@ -126,15 +123,14 @@ class Type extends FieldType
             );
         }
 
-        if ( $value->contents === null )
-        {
-            $value->contents = $this->twitterClient->getEmbed( $value->url );
+        if ($value->contents === null) {
+            $value->contents = $this->twitterClient->getEmbed($value->url);
         }
 
         return new PersistenceValue(
             array(
-                "data" => $this->toHash( $value ),
-                "sortKey" => $this->getSortInfo( $value ),
+                "data" => $this->toHash($value),
+                "sortKey" => $this->getSortInfo($value),
             )
         );
     }
@@ -148,41 +144,35 @@ class Type extends FieldType
      *
      * @return \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value
      */
-    public function fromPersistenceValue( PersistenceValue $fieldValue )
+    public function fromPersistenceValue(PersistenceValue $fieldValue)
     {
-        if ( $fieldValue->data === null )
-        {
+        if ($fieldValue->data === null) {
             return $this->getEmptyValue();
         }
 
-        return new Value( $fieldValue->data );
+        return new Value($fieldValue->data);
     }
 
-    public function validateValidatorConfiguration( $validatorConfiguration )
+    public function validateValidatorConfiguration($validatorConfiguration)
     {
         $validationErrors = array();
 
-        foreach ( $validatorConfiguration as $validatorIdentifier => $constraints )
-        {
+        foreach ($validatorConfiguration as $validatorIdentifier => $constraints) {
             // Report unknown validators
-            if ( !$validatorIdentifier != 'TweetAuthorValidator' )
-            {
-                $validationErrors[] = new ValidationError( "Validator '$validatorIdentifier' is unknown" );
+            if (!$validatorIdentifier != 'TweetAuthorValidator') {
+                $validationErrors[] = new ValidationError("Validator '$validatorIdentifier' is unknown");
                 continue;
             }
 
             // Validate arguments from TweetAuthorValidator
-            if ( !isset( $constraints['AuthorList'] ) || !is_array( $constraints['AuthorList'] ) )
-            {
-                $validationErrors[] = new ValidationError( "Missing or invalid AuthorList argument" );
+            if (!isset($constraints['AuthorList']) || !is_array($constraints['AuthorList'])) {
+                $validationErrors[] = new ValidationError("Missing or invalid AuthorList argument");
                 continue;
             }
 
-            foreach ( $constraints['AuthorList'] as $authorName )
-            {
-                if ( !preg_match( '/^[a-z0-9_]{1,15}$/i', $authorName ) )
-                {
-                    $validationErrors[] = new ValidationError( "Invalid twitter username " );
+            foreach ($constraints['AuthorList'] as $authorName) {
+                if (!preg_match('/^[a-z0-9_]{1,15}$/i', $authorName)) {
+                    $validationErrors[] = new ValidationError("Invalid twitter username ");
                 }
             }
         }
@@ -190,28 +180,26 @@ class Type extends FieldType
         return $validationErrors;
     }
 
-    public function validate( FieldDefinition $fieldDefinition, SPIValue $fieldValue )
+    public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
     {
         $errors = array();
 
-        if ( $this->isEmptyValue( $fieldValue ) )
-        {
+        if ($this->isEmptyValue($fieldValue)) {
             return $errors;
         }
 
         // Tweet Url validation
-        if ( !preg_match( '#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m ) )
-            $errors[] = new ValidationError( "Invalid twitter status url %url%", null, array( $fieldValue->url ) );
+        if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
+            $errors[] = new ValidationError("Invalid twitter status url %url%", null, array($fieldValue->url));
+        }
 
         $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
-        if ( isset( $validatorConfiguration['TweetAuthorValidator'] ) && !empty( $validatorConfiguration['TweetAuthorValidator'] ) )
-        {
-            if ( !in_array( $m[1], $validatorConfiguration['TweetAuthorValidator']['AuthorList'] ) )
-            {
+        if (!empty($validatorConfiguration['TweetAuthorValidator'])) {
+            if (!in_array($m[1], $validatorConfiguration['TweetAuthorValidator']['AuthorList'])) {
                 $errors[] = new ValidationError(
                     "Twitter user %user% is not in the approved author list",
                     null,
-                    array( $m[1] )
+                    array($m[1])
                 );
             }
         }

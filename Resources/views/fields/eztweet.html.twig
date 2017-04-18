@@ -1,10 +1,10 @@
 {% extends "EzPublishCoreBundle::content_fields.html.twig" %}
 
 {% block eztweet_field %}
-{% spaceless %}
-    {% set field_value %}
-        {{ field.value.contents|raw }}
-    {% endset %}
-    {{ block( 'simple_block_field' ) }}
-{% endspaceless %}
+    {% spaceless %}
+        {% set field_value %}
+            {{ field.value.contents|raw }}
+        {% endset %}
+        {{ block( 'simple_block_field' ) }}
+    {% endspaceless %}
 {% endblock %}

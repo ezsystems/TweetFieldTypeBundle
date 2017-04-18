@@ -5,11 +5,13 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+
 namespace EzSystems\TweetFieldTypeBundle\Tests\eZ\Publish\FieldType;
 
 use eZ\Publish\Core\FieldType\Tests\FieldTypeTest;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type as TweetType;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value as TweetValue;
+use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
 
 class TweetTest extends FieldTypeTest
 {
@@ -65,7 +67,7 @@ class TweetTest extends FieldTypeTest
         return array(
             array(
                 'https://twitter.com/user/status/123456789',
-                new TweetValue( array( 'url' => 'https://twitter.com/user/status/123456789' ) ),
+                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
             ),
             array(
                 new TweetValue(
@@ -106,7 +108,7 @@ class TweetTest extends FieldTypeTest
                 null
             ),
             array(
-                new TweetValue( array( 'url' => 'https://twitter.com/user/status/123456789' ) ),
+                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
                 array(
                     'url' => 'https://twitter.com/user/status/123456789',
                     'authorUrl' => '',
@@ -134,11 +136,12 @@ class TweetTest extends FieldTypeTest
     {
         return array(
             array(
-                array(), new TweetValue
+                array(),
+                new TweetValue
             ),
             array(
-                array( 'url' => 'https://twitter.com/user/status/123456789' ),
-                new TweetValue( array( 'url' => 'https://twitter.com/user/status/123456789' ) ),
+                array('url' => 'https://twitter.com/user/status/123456789'),
+                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
             ),
             array(
                 array(
@@ -176,8 +179,9 @@ class TweetTest extends FieldTypeTest
     private function getTwitterClientMock()
     {
         if (!isset($this->twitterClientMock)) {
-            $this->twitterClientMock = $this->getMock('EzSystems\\TweetFieldTypeBundle\\Twitter\\TwitterClientInterface');
+            $this->twitterClientMock = $this->getMock(TwitterClientInterface::class);
         }
+
         return $this->twitterClientMock;
     }
 

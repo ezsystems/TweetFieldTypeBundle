@@ -14,6 +14,7 @@ use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Persistence\Handler;
 use eZ\Publish\SPI\Tests\FieldType\BaseIntegrationTest;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
+use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
 
 /**
  * SPI Integration test for legacy storage field types
@@ -91,8 +92,8 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
     public function getFieldDefinitionData()
     {
         return array(
-            array( 'fieldType', 'eztweet' ),
-            array( 'fieldTypeConstraints', new Content\FieldTypeConstraints() ),
+            array('fieldType', 'eztweet'),
+            array('fieldTypeConstraints', new Content\FieldTypeConstraints()),
         );
     }
 
@@ -136,8 +137,9 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
     private function getTwitterClientMock()
     {
         if (!isset($this->twitterClientMock)) {
-            $this->twitterClientMock = $this->getMock('EzSystems\\TweetFieldTypeBundle\\Twitter\\TwitterClientInterface');
+            $this->twitterClientMock = $this->getMock(TwitterClientInterface::class);
         }
+
         return $this->twitterClientMock;
     }
 }
