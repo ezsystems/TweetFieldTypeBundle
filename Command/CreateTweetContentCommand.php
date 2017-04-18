@@ -25,9 +25,10 @@ class CreateTweetContentCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $repository = $this->getContainer()->get('ezpublish.api.repository');
-        $repository->setCurrentUser(
-            $repository->getUserService()->loadUserByLogin('admin')
-        );
+        $userService = $repository->getUserService();
+        $permissionResolver = $repository->getPermissionResolver();
+        $user = $userService->loadUserByLogin('admin');
+        $permissionResolver->setCurrentUserReference($user);
 
         $contentService = $repository->getContentService();
 
