@@ -15,16 +15,20 @@ class TwitterClient implements TwitterClientInterface
     {
         $parts = explode('/', $statusUrl);
 
-        $response = file_get_contents(
-            sprintf(
-                'https://api.twitter.com/1/statuses/oembed.json?id=%s&align=center',
-                $parts[5]
-            )
-        );
+        if (isset($parts[5])) {
+            $response = file_get_contents(
+                sprintf(
+                    'https://api.twitter.com/1/statuses/oembed.json?id=%s&align=center',
+                    $parts[5]
+                )
+            );
 
-        $data = json_decode($response, true);
 
-        return $data['html'];
+            $data = json_decode($response, true);
+            return $data['html'];
+        }
+
+        return '';
     }
 
     public function getAuthor($statusUrl)
