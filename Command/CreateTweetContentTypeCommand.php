@@ -37,7 +37,7 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
         // Content type create struct
         $createStruct = $contentTypeService->newContentTypeCreateStruct('tweet');
         $createStruct->mainLanguageCode = 'eng-GB';
-        $createStruct->nameSchema = '<title>';
+        $createStruct->nameSchema = '<tweet>';
         $createStruct->names = array(
             'eng-GB' => 'Tweet'
         );
@@ -46,7 +46,7 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
         );
 
         // Tweet FieldDefinition
-        $tweetFieldDefinitionCreateStruct = $contentTypeService->newFieldDefinitionCreateStruct('title', 'ezstring');
+        $tweetFieldDefinitionCreateStruct = $contentTypeService->newFieldDefinitionCreateStruct('tweet', 'eztweet');
         $tweetFieldDefinitionCreateStruct->names = array('eng-GB' => 'Tweet');
         $tweetFieldDefinitionCreateStruct->descriptions = array('eng-GB' => 'The tweet');
         $tweetFieldDefinitionCreateStruct->fieldGroup = 'content';
