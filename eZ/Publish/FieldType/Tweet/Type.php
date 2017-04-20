@@ -206,20 +206,30 @@ class Type extends FieldType
 
         // Tweet Url validation
         if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
-            $errors[] = new ValidationError("Invalid twitter status url %url%", null, array($fieldValue->url));
+            $errors[] = new ValidationError(
+                "Invalid twitter status url %url%",
+                null,
+                array('%url%' => $fieldValue->url)
+            );
         }
 
+        $author = $m[1];
         $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
-        if (isset($validatorConfiguration['TweetValueValidator'])) {
-            if (!in_array($m[1], $validatorConfiguration['authorList'])) {
-                $errors[] = new ValidationError(
-                    "Twitter user %user% is not in the approved author list",
-                    null,
-                    array($m[1])
-                );
-            }
+        if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
+            $errors[] = new ValidationError(
+                "Twitter user %user% is not in the approved author list",
+                null,
+                array('%user%' => $m[1])
+            );
         }
 
         return $errors;
+    }
+
+    private function isAuthorApproved($author, $validatorConfiguration)
+    {
+        return !isset($validatorConfiguration['TweetValueValidator'])
+            || empty($validatorConfiguration['TweetValueValidator']['authorList'])
+            || in_array($author, $validatorConfiguration['TweetValueValidator']['authorList']);
     }
 }
