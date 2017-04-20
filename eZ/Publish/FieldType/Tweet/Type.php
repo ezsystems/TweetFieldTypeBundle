@@ -211,6 +211,8 @@ class Type extends FieldType
                 null,
                 array('%url%' => $fieldValue->url)
             );
+
+            return $errors;
         }
 
         $author = $m[1];
