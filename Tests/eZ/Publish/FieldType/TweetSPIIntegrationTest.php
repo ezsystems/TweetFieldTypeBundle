@@ -136,7 +136,7 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
      */
     private function getTwitterClientMock()
     {
-        if (!isset($this->twitterClientMock)) {
+        if ($this->twitterClientMock === null) {
             $this->twitterClientMock = $this->getMock(TwitterClientInterface::class);
         }
 

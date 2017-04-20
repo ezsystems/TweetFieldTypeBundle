@@ -1,6 +1,3 @@
-parameters:
-    ezsystems.tweetbundle.twitter.client.class: EzSystems\TweetFieldTypeBundle\Twitter\TwitterClient
-
 services:
     ezsystems.tweetbundle.twitter.client:
-        class: %ezsystems.tweetbundle.twitter.client.class%
+        class: EzSystems\TweetFieldTypeBundle\Twitter\TwitterClient

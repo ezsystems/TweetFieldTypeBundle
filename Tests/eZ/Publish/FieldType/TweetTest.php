@@ -12,6 +12,7 @@ use eZ\Publish\Core\FieldType\Tests\FieldTypeTest;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type as TweetType;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value as TweetValue;
 use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
+use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 
 class TweetTest extends FieldTypeTest
 {
@@ -52,11 +53,11 @@ class TweetTest extends FieldTypeTest
         return array(
             array(
                 1,
-                'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException',
+                InvalidArgumentException::class,
             ),
             array(
                 new \stdClass,
-                'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException'
+                InvalidArgumentException::class
             ),
         );
     }
@@ -177,7 +178,7 @@ class TweetTest extends FieldTypeTest
      */
     private function getTwitterClientMock()
     {
-        if (!isset($this->twitterClientMock)) {
+        if ($this->twitterClientMock === null) {
             $this->twitterClientMock = $this->getMock(TwitterClientInterface::class);
         }
 

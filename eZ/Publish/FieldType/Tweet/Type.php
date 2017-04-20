@@ -41,6 +41,11 @@ class Type extends FieldType
         return 'eztweet';
     }
 
+    /**
+     * @param Value $value
+     *
+     * @return string
+     */
     public function getName(SPIValue $value)
     {
         return preg_replace(
@@ -50,6 +55,11 @@ class Type extends FieldType
         );
     }
 
+    /**
+     * @param Value $value
+     *
+     * @return mixed
+     */
     protected function getSortInfo(CoreValue $value)
     {
         return (string)$value->url;
@@ -64,13 +74,20 @@ class Type extends FieldType
         return $inputValue;
     }
 
+    /**
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     *  If the value does not match the expected structure.
+     *
+     * @param Value $value
+     */
     protected function checkValueStructure(CoreValue $value)
     {
         if (!is_string($value->url)) {
             throw new InvalidArgumentType(
-                '$value->text',
+                '$value->url',
                 'string',
-                $value->text
+                $value->url
             );
         }
     }
@@ -91,6 +108,8 @@ class Type extends FieldType
 
     /**
      * @param $value Value
+     *
+     * @return mixed
      */
     public function toHash(SPIValue $value)
     {
