@@ -28,19 +28,19 @@ class TweetTest extends FieldTypeTest
 
     protected function getValidatorConfigurationSchemaExpectation()
     {
-        return array(
-            'TweetValueValidator' => array(
-                'authorList' => array(
+        return [
+            'TweetValueValidator' => [
+                'authorList' => [
                     'type' => 'array',
-                    'default' => array()
-                )
-            )
-        );
+                    'default' => []
+                ]
+            ]
+        ];
     }
 
     protected function getSettingsSchemaExpectation()
     {
-        return array();
+        return [];
     }
 
     protected function getEmptyValueExpectation()
@@ -50,114 +50,114 @@ class TweetTest extends FieldTypeTest
 
     public function provideInvalidInputForAcceptValue()
     {
-        return array(
-            array(
+        return [
+            [
                 1,
                 InvalidArgumentException::class,
-            ),
-            array(
+            ],
+            [
                 new \stdClass,
                 InvalidArgumentException::class
-            ),
-        );
+            ],
+        ];
     }
 
     public function provideValidInputForAcceptValue()
     {
-        return array(
-            array(
+        return [
+            [
                 'https://twitter.com/user/status/123456789',
-                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
-            ),
-            array(
+                new TweetValue(['url' => 'https://twitter.com/user/status/123456789']),
+            ],
+            [
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789'
-                    )
+                    ]
                 ),
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789'
-                    )
+                    ]
                 ),
-            ),
-            array(
+            ],
+            [
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789',
                         'authorUrl' => 'https://twitter.com/user',
                         'contents' => '<blockquote />'
-                    )
+                    ]
                 ),
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789',
                         'authorUrl' => 'https://twitter.com/user',
                         'contents' => '<blockquote />'
-                    )
+                    ]
                 )
-            )
-        );
+            ]
+        ];
     }
 
     public function provideInputForToHash()
     {
-        return array(
-            array(
+        return [
+            [
                 new TweetValue,
                 null
-            ),
-            array(
-                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
-                array(
+            ],
+            [
+                new TweetValue(['url' => 'https://twitter.com/user/status/123456789']),
+                [
                     'url' => 'https://twitter.com/user/status/123456789',
                     'authorUrl' => '',
                     'contents' => ''
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789',
                         'authorUrl' => 'https://twitter.com/user',
                         'contents' => '<blockquote />'
-                    )
+                    ]
                 ),
-                array(
+                [
                     'url' => 'https://twitter.com/user/status/123456789',
                     'authorUrl' => 'https://twitter.com/user',
                     'contents' => '<blockquote />'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     public function provideInputForFromHash()
     {
-        return array(
-            array(
-                array(),
+        return [
+            [
+                [],
                 new TweetValue
-            ),
-            array(
-                array('url' => 'https://twitter.com/user/status/123456789'),
-                new TweetValue(array('url' => 'https://twitter.com/user/status/123456789')),
-            ),
-            array(
-                array(
+            ],
+            [
+                ['url' => 'https://twitter.com/user/status/123456789'],
+                new TweetValue(['url' => 'https://twitter.com/user/status/123456789']),
+            ],
+            [
+                [
                     'url' => 'https://twitter.com/user/status/123456789',
                     'authorUrl' => 'https://twitter.com/user',
                     'contents' => '<blockquote />'
-                ),
+                ],
                 new TweetValue(
-                    array(
+                    [
                         'url' => 'https://twitter.com/user/status/123456789',
                         'authorUrl' => 'https://twitter.com/user',
                         'contents' => '<blockquote />'
-                    )
+                    ]
                 ),
-            )
-        );
+            ]
+        ];
     }
 
     protected function provideFieldTypeIdentifier()
@@ -167,10 +167,10 @@ class TweetTest extends FieldTypeTest
 
     public function provideDataForGetName()
     {
-        return array(
-            array($this->getEmptyValueExpectation(), ''),
-            array(new TweetValue('https://twitter.com/user/status/123456789'), 'user-123456789'),
-        );
+        return [
+            [$this->getEmptyValueExpectation(), ''],
+            [new TweetValue('https://twitter.com/user/status/123456789'), 'user-123456789'],
+        ];
     }
 
     /**
@@ -188,12 +188,12 @@ class TweetTest extends FieldTypeTest
     public function provideValidDataForValidate()
     {
         // @todo implement me
-        return array();
+        return [];
     }
 
     public function provideInvalidDataForValidate()
     {
         // @todo implement me
-        return array();
+        return [];
     }
 }

@@ -37,17 +37,17 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
         $createStruct = $contentTypeService->newContentTypeCreateStruct('tweet');
         $createStruct->mainLanguageCode = 'eng-GB';
         $createStruct->nameSchema = '<tweet>';
-        $createStruct->names = array(
+        $createStruct->names = [
             'eng-GB' => 'Tweet'
-        );
-        $createStruct->descriptions = array(
+        ];
+        $createStruct->descriptions = [
             'eng-GB' => 'Reference to a twitter post',
-        );
+        ];
 
         // Tweet FieldDefinition
         $tweetFieldDefinitionCreateStruct = $contentTypeService->newFieldDefinitionCreateStruct('tweet', 'eztweet');
-        $tweetFieldDefinitionCreateStruct->names = array('eng-GB' => 'Tweet');
-        $tweetFieldDefinitionCreateStruct->descriptions = array('eng-GB' => 'The tweet');
+        $tweetFieldDefinitionCreateStruct->names = ['eng-GB' => 'Tweet'];
+        $tweetFieldDefinitionCreateStruct->descriptions = ['eng-GB' => 'The tweet'];
         $tweetFieldDefinitionCreateStruct->fieldGroup = 'content';
         $tweetFieldDefinitionCreateStruct->position = 10;
         $tweetFieldDefinitionCreateStruct->isTranslatable = true;
@@ -58,7 +58,7 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
         $createStruct->addFieldDefinition($tweetFieldDefinitionCreateStruct);
 
         try {
-            $contentTypeDraft = $contentTypeService->createContentType($createStruct, array($contentTypeGroup));
+            $contentTypeDraft = $contentTypeService->createContentType($createStruct, [$contentTypeGroup]);
             $contentTypeService->publishContentTypeDraft($contentTypeDraft);
             $contentType = $contentTypeService->loadContentTypeByIdentifier('tweet');
             $output->writeln("Created ContentType 'tweet' with ID {$contentType->id}");

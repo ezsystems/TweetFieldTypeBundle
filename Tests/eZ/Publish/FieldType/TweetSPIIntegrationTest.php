@@ -90,10 +90,10 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
      */
     public function getFieldDefinitionData()
     {
-        return array(
-            array('fieldType', 'eztweet'),
-            array('fieldTypeConstraints', new Content\FieldTypeConstraints()),
-        );
+        return [
+            ['fieldType', 'eztweet'],
+            ['fieldTypeConstraints', new Content\FieldTypeConstraints()],
+        ];
     }
 
     /**
@@ -104,11 +104,11 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
     public function getInitialValue()
     {
         return new Content\FieldValue(
-            array(
+            [
                 'data' => 'http://twitter.com/xxx/status/123545',
                 'externalData' => null,
                 'sortKey' => 'http://twitter.com/xxx/status/123545',
-            )
+            ]
         );
     }
 
@@ -122,11 +122,11 @@ class TweetSPIIntegrationTest extends BaseIntegrationTest
     public function getUpdatedValue()
     {
         return new Content\FieldValue(
-            array(
+            [
                 'data' => 'http://twitter.com/yyyyy/status/54321',
                 'externalData' => null,
                 'sortKey' => 'http://twitter.com/yyyyy/status/54321',
-            )
+            ]
         );
     }
 

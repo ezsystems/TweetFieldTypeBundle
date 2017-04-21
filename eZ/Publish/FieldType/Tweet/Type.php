@@ -22,14 +22,14 @@ class Type extends FieldType
     /** @var TwitterClientInterface */
     protected $twitterClient;
 
-    protected $validatorConfigurationSchema = array(
-        'TweetValueValidator' => array(
-            'authorList' => array(
+    protected $validatorConfigurationSchema = [
+        'TweetValueValidator' => [
+            'authorList' => [
                 'type' => 'array',
-                'default' => array()
-            )
-        )
-    );
+                'default' => []
+            ]
+        ]
+    ];
 
     public function __construct(TwitterClientInterface $twitterClient)
     {
@@ -68,7 +68,7 @@ class Type extends FieldType
     protected function createValueFromInput($inputValue)
     {
         if (is_string($inputValue)) {
-            $inputValue = new Value(array('url' => $inputValue));
+            $inputValue = new Value(['url' => $inputValue]);
         }
 
         return $inputValue;
@@ -117,11 +117,11 @@ class Type extends FieldType
             return null;
         }
 
-        return array(
+        return [
             'url' => $value->url,
             'authorUrl' => $value->authorUrl,
             'contents' => $value->contents
-        );
+        ];
     }
 
     /**
@@ -133,11 +133,11 @@ class Type extends FieldType
     {
         if ($value === null) {
             return new PersistenceValue(
-                array(
+                [
                     "data" => null,
                     "externalData" => null,
                     "sortKey" => null,
-                )
+                ]
             );
         }
 
@@ -146,10 +146,10 @@ class Type extends FieldType
         }
 
         return new PersistenceValue(
-            array(
+            [
                 "data" => $this->toHash($value),
                 "sortKey" => $this->getSortInfo($value),
-            )
+            ]
         );
     }
 
@@ -173,7 +173,7 @@ class Type extends FieldType
 
     public function validateValidatorConfiguration($validatorConfiguration)
     {
-        $validationErrors = array();
+        $validationErrors = [];
 
         foreach ($validatorConfiguration as $validatorIdentifier => $constraints) {
             // Report unknown validators
@@ -217,7 +217,7 @@ class Type extends FieldType
      */
     public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
     {
-        $errors = array();
+        $errors = [];
 
         if ($this->isEmptyValue($fieldValue)) {
             return $errors;
@@ -228,7 +228,7 @@ class Type extends FieldType
             $errors[] = new ValidationError(
                 "Invalid twitter status url %url%",
                 null,
-                array('%url%' => $fieldValue->url)
+                ['%url%' => $fieldValue->url]
             );
 
             return $errors;
@@ -240,7 +240,7 @@ class Type extends FieldType
             $errors[] = new ValidationError(
                 "Twitter user %user% is not in the approved author list",
                 null,
-                array('%user%' => $m[1])
+                ['%user%' => $m[1]]
             );
         }
 

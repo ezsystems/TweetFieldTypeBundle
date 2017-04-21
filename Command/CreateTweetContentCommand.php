@@ -41,7 +41,7 @@ class CreateTweetContentCommand extends ContainerAwareCommand
         try {
             $contentDraft = $contentService->createContent(
                 $createStruct,
-                array($repository->getLocationService()->newLocationCreateStruct(2))
+                [$repository->getLocationService()->newLocationCreateStruct(2)]
             );
             $content = $contentService->publishVersion($contentDraft->versionInfo);
             $output->writeln("Created Content 'tweet' with ID {$content->id}");

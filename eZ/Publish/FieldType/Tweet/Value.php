@@ -33,10 +33,10 @@ class Value extends BaseValue
      */
     public $contents;
 
-    public function __construct($arg = array())
+    public function __construct($arg = [])
     {
         if (!is_array($arg)) {
-            $arg = array('url' => $arg);
+            $arg = ['url' => $arg];
         }
 
         parent::__construct($arg);
