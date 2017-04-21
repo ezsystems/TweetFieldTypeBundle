@@ -18,7 +18,7 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('ezsystems:tweet-fieldtype:create-contenttype')
-            ->setDescription("Creates a new Content Type with a Tweet field");
+            ->setDescription('Creates a new Content Type with a Tweet field');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -63,7 +63,7 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
             $contentType = $contentTypeService->loadContentTypeByIdentifier('tweet');
             $output->writeln("Created ContentType 'tweet' with ID {$contentType->id}");
         } catch (\eZ\Publish\API\Repository\Exceptions\InvalidArgumentException $e) {
-            $output->writeln("An error occured creating the content type: " . $e->getMessage());
+            $output->writeln('An error occured creating the content type: ' . $e->getMessage());
         }
     }
 }

@@ -18,7 +18,7 @@ class CreateTweetContentCommand extends ContainerAwareCommand
     {
         $this
             ->setName('ezsystems:tweet-fieldtype:create-content')
-            ->setDescription("Creates a new Content of the tweet type");
+            ->setDescription('Creates a new Content of the tweet type');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -46,7 +46,7 @@ class CreateTweetContentCommand extends ContainerAwareCommand
             $content = $contentService->publishVersion($contentDraft->versionInfo);
             $output->writeln("Created Content 'tweet' with ID {$content->id}");
         } catch (\Exception $e) {
-            $output->writeln("An error occurred creating the content: " . $e->getMessage());
+            $output->writeln('An error occurred creating the content: ' . $e->getMessage());
             $output->writeln($e->getTraceAsString());
         }
     }

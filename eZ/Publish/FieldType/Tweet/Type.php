@@ -134,9 +134,9 @@ class Type extends FieldType
         if ($value === null) {
             return new PersistenceValue(
                 [
-                    "data" => null,
-                    "externalData" => null,
-                    "sortKey" => null,
+                    'data' => null,
+                    'externalData' => null,
+                    'sortKey' => null,
                 ]
             );
         }
@@ -147,8 +147,8 @@ class Type extends FieldType
 
         return new PersistenceValue(
             [
-                "data" => $this->toHash($value),
-                "sortKey" => $this->getSortInfo($value),
+                'data' => $this->toHash($value),
+                'sortKey' => $this->getSortInfo($value),
             ]
         );
     }
@@ -187,11 +187,11 @@ class Type extends FieldType
                 switch ($name) {
                     case 'authorList':
                         if (!is_array($value)) {
-                            $validationErrors[] = new ValidationError("Invalid authorList argument");
+                            $validationErrors[] = new ValidationError('Invalid authorList argument');
                         }
                         foreach ($value as $authorName) {
                             if (!preg_match('/^[a-z0-9_]{1,15}$/i', $authorName)) {
-                                $validationErrors[] = new ValidationError("Invalid twitter username");
+                                $validationErrors[] = new ValidationError('Invalid twitter username');
                             }
                         }
                         break;
@@ -226,7 +226,7 @@ class Type extends FieldType
         // Tweet Url validation
         if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
             $errors[] = new ValidationError(
-                "Invalid twitter status url %url%",
+                'Invalid twitter status url %url%',
                 null,
                 ['%url%' => $fieldValue->url]
             );
@@ -238,7 +238,7 @@ class Type extends FieldType
         $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
         if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
             $errors[] = new ValidationError(
-                "Twitter user %user% is not in the approved author list",
+                'Twitter user %user% is not in the approved author list',
                 null,
                 ['%user%' => $m[1]]
             );
