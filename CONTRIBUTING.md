@@ -9,7 +9,7 @@ We have a [Bug Tracker](https://jira.ez.no) and you can talk to a human on eZ Co
 
 Our Development Guidelines are available on this page: https://doc.ez.no/display/DEVELOPER/Development+guidelines
 
-## Topics covered by this Guidelines
+## Topics covered by the Guidelines
 
 * HTTP
 * REST
