@@ -1,0 +1,18 @@
+system:
+    default:
+        yui:
+            modules:
+                tweeteditview-ez-template:
+                    type: 'template'
+                    path: bundles/ezsystemstweetfieldtype/templates/fields/edit/tweet.hbt
+                ez-tweet-editview:
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'tweeteditview-ez-template']
+                    dependencyOf: ['ez-contenteditformview']
+                    path: bundles/ezsystemstweetfieldtype/js/views/fields/ez-tweet-editview.js
+                tweetview-ez-template:
+                    type: 'template'
+                    path: bundles/ezsystemstweetfieldtype/templates/fields/view/tweet.hbt
+                ez-tweet-view:
+                    requires: ['ez-fieldview', 'tweetview-ez-template']
+                    dependencyOf: ['ez-rawcontentview']
+                    path: bundles/ezsystemstweetfieldtype/js/views/fields/ez-tweet-view.js
