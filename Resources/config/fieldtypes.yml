@@ -10,3 +10,8 @@ services:
         class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
         tags:
             - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
+
+    ezsystems.tweetbundle.fieldtype.eztweet.form_mapper:
+        class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\FormMapper
+        tags:
+            - {name: ez.fieldFormMapper.definition, fieldType: eztweet}

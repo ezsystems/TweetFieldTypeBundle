@@ -1,0 +1,33 @@
+<?php
+/**
+ * File containing the StringToArrayTransformer class.
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+namespace EzSystems\TweetFieldTypeBundle\Form;
+
+use Symfony\Component\Form\DataTransformerInterface;
+
+class StringToArrayTransformer implements DataTransformerInterface
+{
+    public function transform($array)
+    {
+        if ($array !== null) {
+            return implode(',', $array);
+        }
+
+        return '';
+    }
+
+    public function reverseTransform($string)
+    {
+        if (!empty($string)) {
+            $array = explode(',', $string);
+            return array_map('trim', $array);
+        }
+
+        return [];
+    }
+}
