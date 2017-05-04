@@ -4,8 +4,8 @@
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
- * @version //autogentag//
  */
+
 namespace EzSystems\TweetFieldTypeBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -17,36 +17,37 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName( 'ezsystems:tweet-fieldtype:create-contenttype' )
-            ->setDescription( "Creates a new Content Type with a Tweet field" );
+            ->setName('ezsystems:tweet-fieldtype:create-contenttype')
+            ->setDescription('Creates a new Content Type with a Tweet field');
     }
 
-    protected function execute( InputInterface $input, OutputInterface $output )
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repository = $this->getContainer()->get( 'ezpublish.api.repository' );
-        $repository->setCurrentUser(
-            $repository->getUserService()->loadUserByLogin( 'admin' )
-        );
+        $repository = $this->getContainer()->get('ezpublish.api.repository');
+        $userService = $repository->getUserService();
+        $permissionResolver = $repository->getPermissionResolver();
+        $user = $userService->loadUserByLogin('admin');
+        $permissionResolver->setCurrentUserReference($user);
 
         $contentTypeService = $repository->getContentTypeService();
 
-        $contentTypeGroup = $contentTypeService->loadContentTypeGroupByIdentifier( 'Content' );
+        $contentTypeGroup = $contentTypeService->loadContentTypeGroupByIdentifier('Content');
 
         // Content type create struct
-        $createStruct = $contentTypeService->newContentTypeCreateStruct( 'tweet' );
+        $createStruct = $contentTypeService->newContentTypeCreateStruct('tweet');
         $createStruct->mainLanguageCode = 'eng-GB';
-        $createStruct->nameSchema = '<title>';
-        $createStruct->names = array(
+        $createStruct->nameSchema = '<tweet>';
+        $createStruct->names = [
             'eng-GB' => 'Tweet'
-        );
-        $createStruct->descriptions = array(
+        ];
+        $createStruct->descriptions = [
             'eng-GB' => 'Reference to a twitter post',
-        );
+        ];
 
         // Tweet FieldDefinition
-        $tweetFieldDefinitionCreateStruct = $contentTypeService->newFieldDefinitionCreateStruct( 'title', 'ezstring' );
-        $tweetFieldDefinitionCreateStruct->names = array( 'eng-GB' => 'Tweet' );
-        $tweetFieldDefinitionCreateStruct->descriptions = array( 'eng-GB' => 'The tweet' );
+        $tweetFieldDefinitionCreateStruct = $contentTypeService->newFieldDefinitionCreateStruct('tweet', 'eztweet');
+        $tweetFieldDefinitionCreateStruct->names = ['eng-GB' => 'Tweet'];
+        $tweetFieldDefinitionCreateStruct->descriptions = ['eng-GB' => 'The tweet'];
         $tweetFieldDefinitionCreateStruct->fieldGroup = 'content';
         $tweetFieldDefinitionCreateStruct->position = 10;
         $tweetFieldDefinitionCreateStruct->isTranslatable = true;
@@ -54,18 +55,15 @@ class CreateTweetContentTypeCommand extends ContainerAwareCommand
         $tweetFieldDefinitionCreateStruct->isSearchable = false;
 
         // Add the field definition to the type create struct
-        $createStruct->addFieldDefinition( $tweetFieldDefinitionCreateStruct );
+        $createStruct->addFieldDefinition($tweetFieldDefinitionCreateStruct);
 
-        try
-        {
-            $contentTypeDraft = $contentTypeService->createContentType( $createStruct, array( $contentTypeGroup ) );
-            $contentTypeService->publishContentTypeDraft( $contentTypeDraft );
-            $contentType = $contentTypeService->loadContentTypeByIdentifier( 'tweet' );
-            $output->writeln( "Created ContentType 'tweet' with ID {$contentType->id}" );
-        }
-        catch ( \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException $e )
-        {
-            $output->writeln( "An error occured creating the content type: " . $e->getMessage() );
+        try {
+            $contentTypeDraft = $contentTypeService->createContentType($createStruct, [$contentTypeGroup]);
+            $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+            $contentType = $contentTypeService->loadContentTypeByIdentifier('tweet');
+            $output->writeln("Created ContentType 'tweet' with ID {$contentType->id}");
+        } catch (\eZ\Publish\API\Repository\Exceptions\InvalidArgumentException $e) {
+            $output->writeln('An error occured creating the content type: ' . $e->getMessage());
         }
     }
 }

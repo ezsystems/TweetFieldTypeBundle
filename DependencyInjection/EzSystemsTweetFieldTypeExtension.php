@@ -16,10 +16,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class EzSystemsTweetFieldTypeExtension extends Extension implements PrependExtensionInterface
 {
-    public function prepend( ContainerBuilder $container )
+    public function prepend(ContainerBuilder $container)
     {
-        $config = Yaml::parse( __DIR__ . '/../Resources/config/ez_field_templates.yml' );   
-        $container->prependExtensionConfig( 'ezpublish', $config );
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../Resources/config/ez_field_templates.yml'));
+        $container->prependExtensionConfig('ezpublish', $config);
     }
 
     /**
@@ -27,8 +27,8 @@ class EzSystemsTweetFieldTypeExtension extends Extension implements PrependExten
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
-        $loader->load( 'fieldtypes.yml' );
-        $loader->load( 'services.yml' );
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('fieldtypes.yml');
+        $loader->load('services.yml');
     }
 }

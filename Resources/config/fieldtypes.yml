@@ -1,16 +1,12 @@
-parameters:
-    ezsystems.tweetbundle.fieldType.eztweet.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type
-    ezsystems.tweetbundle.fieldType.eztweet.converter.class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
-
 services:
-    ezsystems.tweetbundle.fieldType.eztweet:
+    ezsystems.tweetbundle.fieldtype.eztweet:
         parent: ezpublish.fieldType
-        class: %ezsystems.tweetbundle.fieldType.eztweet.class%
+        class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type
         tags:
             - {name: ezpublish.fieldType, alias: eztweet}
-        arguments: [@ezsystems.tweetbundle.twitter.client]
+        arguments: ['@ezsystems.tweetbundle.twitter.client']
 
-    ezsystems.tweetbundle.fieldType.eztweet.converter:
-        class: %ezsystems.tweetbundle.fieldType.eztweet.converter.class%
+    ezsystems.tweetbundle.fieldtype.eztweet.converter:
+        class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
         tags:
             - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}

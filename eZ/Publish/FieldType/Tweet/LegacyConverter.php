@@ -4,8 +4,8 @@
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
- * @version //autogentag//
  */
+
 namespace EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 
 use eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter;
@@ -16,24 +16,24 @@ use eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition;
 
 class LegacyConverter implements Converter
 {
-    public function toStorageValue( FieldValue $value, StorageFieldValue $storageFieldValue )
+    public function toStorageValue(FieldValue $value, StorageFieldValue $storageFieldValue)
     {
-        $storageFieldValue->dataText = json_encode( $value->data );
+        $storageFieldValue->dataText = json_encode($value->data);
         $storageFieldValue->sortKeyString = $value->sortKey;
     }
 
-    public function toFieldValue( StorageFieldValue $value, FieldValue $fieldValue )
+    public function toFieldValue(StorageFieldValue $value, FieldValue $fieldValue)
     {
-        $fieldValue->data = json_decode( $value->dataText, true );
+        $fieldValue->data = json_decode($value->dataText, true);
         $fieldValue->sortKey = $value->sortKeyString;
     }
 
-    public function toStorageFieldDefinition( FieldDefinition $fieldDef, StorageFieldDefinition $storageDef )
+    public function toStorageFieldDefinition(FieldDefinition $fieldDef, StorageFieldDefinition $storageDef)
     {
         // @todo implement me
     }
 
-    public function toFieldDefinition( StorageFieldDefinition $storageDef, FieldDefinition $fieldDef )
+    public function toFieldDefinition(StorageFieldDefinition $storageDef, FieldDefinition $fieldDef)
     {
         // @todo implement me
     }
