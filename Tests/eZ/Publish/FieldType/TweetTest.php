@@ -8,7 +8,9 @@
 
 namespace EzSystems\TweetFieldTypeBundle\Tests\eZ\Publish\FieldType;
 
+use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
 use eZ\Publish\Core\FieldType\Tests\FieldTypeTest;
+use eZ\Publish\SPI\FieldType\Value as SPIValue;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type as TweetType;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value as TweetValue;
 use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
@@ -20,6 +22,11 @@ class TweetTest extends FieldTypeTest
      * @var \EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $twitterClientMock;
+
+    /**
+     * @var FieldDefinition|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $fieldDefinitionMock;
 
     protected function createFieldTypeUnderTest()
     {
@@ -165,6 +172,19 @@ class TweetTest extends FieldTypeTest
         return 'eztweet';
     }
 
+    /**
+     * @dataProvider provideDataForGetName
+     *
+     * @param SPIValue $value
+     * @param string $expected
+     *
+     * @expectedException \RuntimeException
+     */
+    public function testGetName(SPIValue $value, $expected)
+    {
+        $this->getFieldTypeUnderTest()->getName($value);
+    }
+
     public function provideDataForGetName()
     {
         return [
@@ -195,5 +215,34 @@ class TweetTest extends FieldTypeTest
     {
         // @todo implement me
         return [];
+    }
+
+    /**
+     * @dataProvider provideDataForGetName
+     *
+     * @param SPIValue $value
+     * @param string $expected
+     */
+    public function testGetFieldName(SPIValue $value, $expected)
+    {
+        $fieldDefinitionMock = $this->getFieldDefinitionMock();
+        $languageCodeDummy = '';
+
+        self::assertSame(
+            $expected,
+            $this->getFieldTypeUnderTest()->getFieldName($value, $fieldDefinitionMock, $languageCodeDummy)
+        );
+    }
+
+    /**
+     * @return FieldDefinition|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getFieldDefinitionMock()
+    {
+        if ($this->fieldDefinitionMock === null) {
+            $this->fieldDefinitionMock = $this->getMock(FieldDefinition::class);
+        }
+
+        return $this->fieldDefinitionMock;
     }
 }
