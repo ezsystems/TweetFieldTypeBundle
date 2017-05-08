@@ -5,3 +5,8 @@ services:
         tags:
             - {name: ezpublish.fieldType, alias: eztweet}
         arguments: ['@ezsystems.tweetbundle.twitter.client']
+
+    ezsystems.tweetbundle.fieldtype.eztweet.converter:
+        class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
+        tags:
+            - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
