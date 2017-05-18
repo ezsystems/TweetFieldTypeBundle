@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentTypeCreate>
+    <identifier>tweet</identifier>
+    <mainLanguageCode>eng-GB</mainLanguageCode>
+    <urlAliasSchema>&lt;tweet&gt;</urlAliasSchema>
+    <nameSchema>&lt;tweet&gt;</nameSchema>
+    <isContainer>false</isContainer>
+    <defaultSortField>PATH</defaultSortField>
+    <defaultSortOrder>ASC</defaultSortOrder>
+    <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+    <names>
+        <value languageCode="eng-GB">A tweet</value>
+    </names>
+    <descriptions>
+        <value languageCode="eng-GB">A tweet, as embedded from twitter</value>
+    </descriptions>
+    <modificationDate>2013-09-10T15:46:00</modificationDate>
+    <User href="/api/ezp/v2/user/users/14" />
+    <FieldDefinitions>
+        <FieldDefinition>
+            <identifier>tweet</identifier>
+            <fieldType>eztweet</fieldType>
+            <names>
+                <value languageCode="eng-GB">Tweet</value>
+            </names>
+            <fieldGroup>content</fieldGroup>
+            <position>1</position>
+            <isTranslatable>true</isTranslatable>
+            <isRequired>true</isRequired>
+            <isInfoCollector>false</isInfoCollector>
+            <isSearchable>false</isSearchable>
+        </FieldDefinition>
+    </FieldDefinitions>
+</ContentTypeCreate>
