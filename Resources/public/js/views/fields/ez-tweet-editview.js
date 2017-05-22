@@ -7,8 +7,7 @@ YUI.add('ez-tweet-editview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var FIELDTYPE_IDENTIFIER = 'eztweet',
-        VALIDATION_PATTERN = /^https?:\/\/twitter.com\/([^\/]+)\/status\/[0-9]+$/;
+    var FIELDTYPE_IDENTIFIER = 'eztweet';
 
     /**
      * Tweet edit view
@@ -34,7 +33,7 @@ YUI.add('ez-tweet-editview', function (Y) {
         validate: function () {
             var validity = this._getInputValidity();
 
-            if ( validity.typeMismatch || !this._isValidUrl() ) {
+            if ( validity.typeMismatch || validity.patternMismatch ) {
                 this.set('errorStatus', Y.eZ.trans('url.not.valid', {}, 'fieldedit'));
             } else if ( validity.valueMissing ) {
                 this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
@@ -83,23 +82,6 @@ YUI.add('ez-tweet-editview', function (Y) {
          */
         _getFieldValue: function () {
             return this.get('container').one('.ez-tweet-input-ui input').get('value');
-        },
-
-        /**
-         * Checks twitter url validity. Regexp is tested only
-         * if field is not empty.
-         * Otherwise, the email address edit view could accept email
-         * that will be considered invalid when creating/updating a content.
-         *
-         * @protected
-         * @method _isValidUrl
-         * @return {Boolean}
-         */
-        _isValidUrl: function () {
-            if (this._getFieldValue().length > 0) {
-                return VALIDATION_PATTERN.test(this._getFieldValue());
-            }
-            return true;
         }
     });
 
