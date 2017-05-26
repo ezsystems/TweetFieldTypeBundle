@@ -6,6 +6,6 @@ First, you will see how to generate the skeleton for a standard Symfony 2 bundle
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Introduction to "Creating a Tweet Field Type" tutorial](Creating-a-Tweet-Field-Type)
+⬅ Previous: [Introduction to "Creating a Tweet Field Type" tutorial](creating_a_tweet_fieldtype.md)
 
-Next: [Create the bundle](Create-the-bundle) ➡
+Next: [Create the bundle](create_the_bundle.md) ➡

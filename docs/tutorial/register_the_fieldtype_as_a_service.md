@@ -54,6 +54,6 @@ services:
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Implement the Tweet\\Type class](Implement-the-Tweet-Type-class)
+⬅ Previous: [Implement the Tweet\\Type class](implement_the_tweet_type_class.md)
 
-Next: [Implement the Legacy Storage Engine Converter](Implement-the-Legacy-Storage-Engine-Converter) ➡
+Next: [Implement the Legacy Storage Engine Converter](implement_the_legacy_storage_engine_converter.md) ➡

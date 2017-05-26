@@ -60,6 +60,6 @@ public function __toString()
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Structure the bundle](Structure-the-bundle)
+⬅ Previous: [Structure the bundle](structure_the_bundle.md)
 
-Next: [Implement the Tweet\\Type class](Implement-the-Tweet-Type-class) ➡
+Next: [Implement the Tweet\\Type class](implement_the_tweet_type_class.md) ➡

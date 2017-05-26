@@ -68,6 +68,6 @@ Feel free to delete the Controller folder, since you won’t use it in this tuto
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Build the bundle](Build-the-bundle)
+⬅ Previous: [Build the bundle](build_the_bundle.md)
 
-Next: [Structure the bundle](Structure-the-bundle) ➡
+Next: [Structure the bundle](structure_the_bundle.md) ➡

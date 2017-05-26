@@ -144,6 +144,6 @@ services:
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Register the Field Type as a service](Register-the-Field-Type-as-a-service)
+⬅ Previous: [Register the Field Type as a service](register_the_fieldtype_as_a_service.md)
 
-Next: [Introduce a template](Introduce-a-template) ➡
+Next: [Introduce a template](introduce_a_template.md) ➡

@@ -32,6 +32,6 @@ A value class must implement the `eZ\Publish\SPI\FieldType\Value` interface. It 
 
 ------------------------------------------------------------------------
 
-⬅> Previous: [Create the bundle](Create-the-bundle)
+⬅> Previous: [Create the bundle](create_the_bundle.md)
 
-Next: [Implement the Tweet\\Value class](Implement-the-Tweet-Value-class) ➡
+Next: [Implement the Tweet\\Value class](implement_the_tweet_value_class.md) ➡

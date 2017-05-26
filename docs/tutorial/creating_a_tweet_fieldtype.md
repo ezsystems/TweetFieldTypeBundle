@@ -42,22 +42,22 @@ The tutorial will lead you through the following steps:
 #### 1. The bundle
 
 Field Types, like any other eZ Platform plugin, must be provided as Symfony2 bundles. This chapter covers the creation and organization of this bundle.
-Read more about [creating](Create-the-bundle) and [structuring the bundle](Structure-the-bundle).
+Read more about [creating](create_the_bundle.md) and [structuring the bundle](structure_the_bundle.md).
 
 #### 2. API
 
 This part covers the implementation of the eZ Platform API elements required to implement a custom Field Type.
-Read more about [implementing the Tweet\\Value class](Implement-the-Tweet-Value-class) and [the Tweet\\Type class](Implement-the-Tweet-Type-class).
+Read more about [implementing the Tweet\\Value class](implement_the_tweet_value_class.md) and [the Tweet\\Type class](implement_the_tweet_type_class.md).
 
 #### 3. Converter
 
 Storing data from any Field Type in the Legacy Storage Engine requires that your custom data is mapped to the data model.
-Read more about [implementing the Legacy Storage Engine Converter](Implement-the-Legacy-Storage-Engine-Converter).
+Read more about [implementing the Legacy Storage Engine Converter](implement_the_legacy_storage_engine_converter.md).
 
 #### 4. Templating
 
 Displaying a Field Type's data is done through a [Twig template](http://twig.sensiolabs.org/doc/intro.html).
-Read more about [implementing the Field Type template](Introduce-a-template).
+Read more about [implementing the Field Type template](introduce_a_template.md).
 
 #### 5. PlatformUI integration
 
@@ -65,4 +65,4 @@ Viewing and editing values of the Field Type in PlatformUI requires that you ext
 
 You should ideally read the general [extensibility documentation for PlatformUI](https://doc.ez.no/display/DEVELOPER/Extending+eZ+Platform+UI). You can find information about view templates [in the next tutorial](https://doc.ez.no/display/DEVELOPER/Define+a+View). Edit templates are not documented at the time of writing, but [Netgen](http://www.netgenlabs.com/) has published a tutorial that covers the topic: (http://www.netgenlabs.com/Blog/Adding-support-for-a-new-field-type-to-eZ-Publish-Platform-UI).
 
-[Start the tutorial](Build-the-bundle) ➡
+[Start the tutorial](build_the_bundle.md) ➡

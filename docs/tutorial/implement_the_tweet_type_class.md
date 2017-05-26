@@ -429,6 +429,6 @@ And that's it! When the persistence layer stores content from our type, the valu
 
 ------------------------------------------------------------------------
 
-⬅ Previous: [Implement the Tweet\\Value class](Implement-the-Tweet-Value-class)
+⬅ Previous: [Implement the Tweet\\Value class](implement_the_tweet_value_class.md)
 
-Next: [Register the Field Type as a service](Register-the-Field-Type-as-a-service) ➡
+Next: [Register the Field Type as a service](register_the_fieldtype_as_a_service.md) ➡
