@@ -36,7 +36,12 @@ class CreateTweetContentCommand extends ContainerAwareCommand
             $repository->getContentTypeService()->loadContentTypeByIdentifier('tweet'),
             'eng-GB'
         );
-        $createStruct->setField('tweet', 'https://twitter.com/bdunogier/status/435763219555037184', 'eng-GB');
+        /* Thanks to:
+         * https://twitter.com/Flutchman_Fride
+         * https://twitter.com/comtocode
+         * https://twitter.com/eZSystemsFR
+         */
+        $createStruct->setField('tweet', 'https://twitter.com/Flutchman_Fride/status/847423373940473856', 'eng-GB');
 
         try {
             $contentDraft = $contentService->createContent(
