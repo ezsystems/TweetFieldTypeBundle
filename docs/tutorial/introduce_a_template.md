@@ -57,7 +57,7 @@ First, you need to make the template inherit from `content_fields.html.twig`. Th
 
 ## Registering the template
 
-As explained in the [FieldType template documentation](https://confluence.ez.no/display/DEVELOPER/Field+Type+template#FieldTypetemplate-Registeringyourtemplate, a Field Type template needs to be registered in the eZ Platform semantic configuration. The most basic way to do this would be to do so in `app/config/ezplatform.yml`:
+As explained in the [FieldType template documentation](https://confluence.ez.no/display/DEVELOPER/Field+Type+template#FieldTypetemplate-Registeringyourtemplate), a Field Type template needs to be registered in the eZ Platform semantic configuration. The most basic way to do this would be to do so in `app/config/ezplatform.yml`:
 
 ``` yml
 # app/config/ezplatform.yml
@@ -102,7 +102,7 @@ system:
 
 Notice that the `ezpublish` yaml block was deleted. This is because you already import your configuration under the `ezpublish` namespace in the `prepend` method.
 
-You should now be able to display a Content item with this Field Type from the front office, with a fully functional embed:
+You should now be able to display a Content item with this Field Type from the front office, with a fully functional embed.
 
 ------------------------------------------------------------------------
 

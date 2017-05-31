@@ -5,7 +5,7 @@ At this point, you have a basic application-specific Symfony 2 bundle. Let’s s
 To make it easier to move around the code, you will to some extent mimic the structure that is used in the kernel of eZ Platform. Native Field Types are located inside `ezpublish-kernel` (in `vendor/ezsystems`), in the `eZ/Publish/Core/FieldType` folder.
 Each Field Type has its own subfolder: `TextLine`, `Email`, `Url`, etc.
 
-Clone the GitHub repository to follow this tutorial, it will be useful: (https://github.com/ezsystems/TweetFieldTypeBundle).
+Clone this GitHub repository to follow this tutorial, it will be useful: (https://github.com/ezsystems/TweetFieldTypeBundle).
 
 You will use a structure quite close to this.
 
@@ -32,6 +32,6 @@ A value class must implement the `eZ\Publish\SPI\FieldType\Value` interface. It 
 
 ------------------------------------------------------------------------
 
-⬅> Previous: [Create the bundle](create_the_bundle.md)
+⬅ Previous: [Create the bundle](create_the_bundle.md)
 
 Next: [Implement the Tweet\\Value class](implement_the_tweet_value_class.md) ➡
