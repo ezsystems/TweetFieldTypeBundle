@@ -18,7 +18,7 @@ php app/console generate:bundle
 First, you are asked:
 
 ``` bash
-Are you planning on sharing this bundle across multiple applications? [no]: yes <enter>
+Are you planning on sharing this bundle across multiple applications? [no]: yes<enter>
 ```
 
 Type the answer `yes` and submit it with an Enter.
@@ -29,10 +29,10 @@ Next you will be asked about the namespace of your bundle.
 
 See (http://symfony.com/doc/current/cookbook/bundles/best_practices.html#bundle-name) for more details on bundle naming conventions.
 
-Put **EzSystems\\TweetFieldTypeBundle** as Bundle namespace, then the name of the bundle will be hinted from this entry.
+Put **EzSystems/TweetFieldTypeBundle** as Bundle namespace, then the name of the bundle will be hinted from this entry.
 
 ``` bash
-Bundle namespace: EzSystems\TweetFieldTypeBundle<enter>
+Bundle namespace: EzSystems/TweetFieldTypeBundle<enter>
 ```
 
 Next, you must select the bundle name. Choose a preferably unique name for the Field Type: `TweetFieldTypeBundle`. Add the vendor name (in this case, `EzSystems`, but you can of course substitute it with your own) and end the name with `Bundle`:
@@ -52,19 +52,24 @@ Target Directory [src/]:<enter>
 You must then specify which format the configuration will be generated as. Use yml, since it is what is used in eZ Platform itself. Of course, any other format could be used.
 
 ``` bash
-Configuration format (annotation, yml, xml, php, annotation): yml<enter>
+Configuration format (annotation, yml, xml, php) [xml]: yml<enter>
 ```
 
-Our bundle should now be generated. Navigate to `src/EzSystemsTweetFieldTypeBundle` and you should see the following structure:
+Our bundle should now be generated. Navigate to `src/EzSystems/TweetFieldTypeBundle` and you should see the following structure:
 
 ``` bash
-$ ls -l src/EzSystemsTweetFieldTypeBundle
-Controller
+$ ls -l src/EzSystems/TweetFieldTypeBundle
+Controller/
+DependencyInjection/
 EzSystemsTweetFieldTypeBundle.php
-Resources
+Resources/
+Tests/
 ```
 
 Feel free to delete the Controller folder, since you won’t use it in this tutorial. It could have been useful, had our Field Type required an interface of its own.
+Also, you can safely delete the `Resources/views/Default` folder and `Resources/config/routing.yml` file, as they won't be needed. You should remove the `ez_systems_tweet_field_type` entry from your app/config/routing.yml file as well.
+
+The tests aren't part of the documentation, but you can find them in the repository. 
 
 ------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@ The Value class will contain at least:
 - public properties: used to store the actual data
 - an implementation of the `__toString()` method: required by the Value interface it inherits from
 
-By default, the constructor from `FieldType\Value` will be used. It allows you to pass a hash of property/value pairs. You can override it as well if you want.
+By default, the constructor from `FieldType\Value` will be used. It allows you to pass a hash of property/value pairs. You can override it as well if you want. In this example, we will do that to allow passing only string with the URL as an argument.
 
 The Tweet Field Type is going to store 3 elements:
 
@@ -26,23 +26,24 @@ You will end up with the following properties:
 
 //Properties of the class Value
 /**
-* Tweet URL on twitter.com (http://twitter.com/UserName/status/id).
-* @var string
-*/
+ * Tweet URL on twitter.com.
+ *
+ * @var string
+ */
 public $url;
 
-
 /**
-* Author's tweet URL (http://twitter.com/UserName)
-* @var string
-*/
+ * Author's Twitter URL (https://twitter.com/UserName)
+ *
+ * @var string
+ */
 public $authorUrl;
 
-
 /**
-* The tweet's embed HTML
-* @var string
-*/
+ * The tweet's embed HTML
+ *
+ * @var string
+ */
 public $contents;
 ```
 
@@ -54,7 +55,23 @@ The only thing left to honor the `FieldType\Value` interface is to add a `__toSt
 //Methods of the class Value
 public function __toString()
 {
-   return (string)$this->url;
+    return (string)$this->url;
+}
+```
+
+As mentioned before, we can also override the constructor to accept passing the URL as a string:
+
+``` php
+// eZ/Publish/FieldType/Tweet/Value.php
+
+//Contructor
+public function __construct($arg = [])
+{
+    if (!is_array($arg)) {
+        $arg = ['url' => $arg];
+    }
+
+    parent::__construct($arg);
 }
 ```
 
