@@ -17,7 +17,7 @@ This method must return the string that **uniquely** identifies this Field Type 
 
 public function getFieldTypeIdentifier()
 {
-   return 'eztweet';
+    return 'eztweet';
 }
 ```
 
@@ -33,14 +33,13 @@ Both methods are used by the abstract Field Type implementation of `acceptValue(
 The only acceptable value for your type is the URL of a tweet (you could of course imagine more possibilities). This should do:
 
 ``` php
-protected function createValueFromInput( $inputValue )
+protected function createValueFromInput($inputValue)
 {
-   if ( is_string( $inputValue ) )
-   {
-       $inputValue = new Value( array( 'url' => $inputValue ) );
-   }
+    if (is_string($inputValue)) {
+        $inputValue = new Value(['url' => $inputValue]);
+    }
 
-   return $inputValue;
+    return $inputValue;
 }
 ```
 
@@ -49,16 +48,15 @@ Use this method to provide convenient ways to set an attribute’s value using t
 Next, implement `checkValueStructure()`. It is called by the abstract Field Type to ensure that the Value fed to the Type is acceptable. In this case, you want to be sure that `Tweet` `     \Value::$url` is a string:
 
 ``` php
-protected function checkValueStructure( BaseValue $value )
+protected function checkValueStructure(CoreValue $value)
 {
-   if ( !is_string( $value->url ) )
-   {
-       throw new eZ\Publish\Core\Base\Exceptions\InvalidArgumentType(
-           '$value->url',
-           'string',
-           $value->url
-       );
-   }
+    if (!is_string($value->url)) {
+        throw new InvalidArgumentType(
+            '$value->url',
+            'string',
+            $value->url
+        );
+    }
 }
 ```
 
@@ -75,7 +73,7 @@ This method provides what is considered an empty value of this type, depending o
 
 public function getEmptyValue()
 {
-   return new Value;
+    return new Value;
 }
 ```
 
@@ -97,15 +95,14 @@ For the validator schema configuration, you can add:
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-protected $validatorConfigurationSchema = array(
-    'TweetUrlValidator' => array(),
-    'TweetAuthorValidator' => array(
-            'AuthorList' => array(
-                 'type' => 'array',
-                 'default' => array()
-        )
-    )
-);
+protected $validatorConfigurationSchema = [
+    'TweetValueValidator' => [
+        'authorList' => [
+            'type' => 'array',
+            'default' => []
+        ]
+    ]
+];
 ```
 
 For a TextLine (length validation), it means checking that both min length and max length are positive integers, and that min is lower than max.
@@ -135,44 +132,45 @@ Each level one key is the name of a validator, as acknowledged by the Type. That
 You do not need to include mandatory validators if they don’t have options. Here is an example of what your Type expects as validation configuration:
 
 ``` php
-array(
-   ‘TweetAuthorValidator’ => array(
-       ‘AuthorList’ => array( ‘johndoe’, ‘janedoe’ )
-   )
-);
+[
+    'TweetValueValidator' => [
+        'authorList' => ['johndoe', 'janedoe']
+    ]
+];
 ```
 
-The configuration says that tweets must be either by `johndoe` or by `janedoe`. If you had not provided `TweetAuthorValidator` at all, it would have been ignored.
+The configuration says that tweets must be either by `johndoe` or by `janedoe`. If you had not provided `TweetValueValidator` at all, it would have been ignored.
 
 You will iterate over the items in `$validatorConfiguration` and:
 
 - add errors for those you don’t know about;
 - check that provided arguments are known and valid:
-  - `TweetAuthorValidator` accepts a non-empty array of valid Twitter usernames
+  - `TweetValueValidator` accepts a non-empty array of valid Twitter usernames
 
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-public function validateValidatorConfiguration( $validatorConfiguration )
+public function validateValidatorConfiguration($validatorConfiguration)
 {
-    $validationErrors = array();
+    $validationErrors = [];
+
     foreach ($validatorConfiguration as $validatorIdentifier => $constraints) {
         // Report unknown validators
         if ($validatorIdentifier !== 'TweetValueValidator') {
             $validationErrors[] = new ValidationError("Validator '$validatorIdentifier' is unknown");
             continue;
         }
+
         // Validate arguments from TweetValueValidator
         foreach ($constraints as $name => $value) {
             switch ($name) {
                 case 'authorList':
                     if (!is_array($value)) {
-                        $validationErrors[] = new ValidationError("Invalid authorList argument");
+                        $validationErrors[] = new ValidationError('Invalid authorList argument');
                     }
-
                     foreach ($value as $authorName) {
                         if (!preg_match('/^[a-z0-9_]{1,15}$/i', $authorName)) {
-                            $validationErrors[] = new ValidationError("Invalid twitter username");
+                            $validationErrors[] = new ValidationError('Invalid twitter username');
                         }
                     }
                     break;
@@ -181,6 +179,7 @@ public function validateValidatorConfiguration( $validatorConfiguration )
             }
         }
     }
+
     return $validationErrors;
 }
 ```
@@ -190,43 +189,44 @@ public function validateValidatorConfiguration( $validatorConfiguration )
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-/**
- * Validates a field based on the validators in the field definition.
- *
- * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
- *
- * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $fieldDefinition
- * The field definition of the field
- * @param Value $fieldValue The field value for which an action is performed
- *
- * @return \eZ\Publish\SPI\FieldType\ValidationError[]
- */
-    public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
-    {
-        $errors = [];
-        if ($this->isEmptyValue($fieldValue)) {
-            return $errors;
-        }
-        // Tweet Url validation
-        if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
-            $errors[] = new ValidationError(
-                'Invalid twitter status url %url%',
-                null,
-                ['%url%' => $fieldValue->url]
-            );
-            return $errors;
-        }
-        $author = $m[1];
-        $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
-        if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
-            $errors[] = new ValidationError(
-                'Twitter user %user% is not in the approved author list',
-                null,
-                ['%user%' => $m[1]]
-            );
-        }
+public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
+{
+    $errors = [];
+
+    if ($this->isEmptyValue($fieldValue)) {
         return $errors;
     }
+
+    // Tweet URL validation
+    if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
+        $errors[] = new ValidationError(
+            'Invalid Twitter status URL %url%',
+            null,
+            ['%url%' => $fieldValue->url]
+        );
+
+        return $errors;
+    }
+
+    $author = $m[1];
+    $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
+    if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
+        $errors[] = new ValidationError(
+            'Twitter user %user% is not in the approved author list',
+            null,
+            ['%user%' => $m[1]]
+        );
+    }
+
+    return $errors;
+}
+
+private function isAuthorApproved($author, $validatorConfiguration)
+{
+    return !isset($validatorConfiguration['TweetValueValidator'])
+        || empty($validatorConfiguration['TweetValueValidator']['authorList'])
+        || in_array($author, $validatorConfiguration['TweetValueValidator']['authorList']);
+}
 ```
 
 First, you validate the URL with a regular expression. If it doesn’t match, you add an instance of `ValidationError` to the return array. Note that the tested value isn’t directly embedded in the message but passed as an argument. This ensures that the variable is properly encoded in order to prevent attacks, and allows for singular/plural phrases using the second parameter.
@@ -248,12 +248,15 @@ Obviously, a tweet’s full URL isn’t really suitable as a name. Let’s use a
 You can assume that this method will not be called if the Field is empty, and that the URL is a valid twitter URL:
 
 ``` php
-public function getName( SPIValue $value )
+// eZ/Publish/FieldType/Tweet/Type.php
+
+public function getName(SPIValue $value)
 {
-   return preg_replace(
-       '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
-       '$1-$2',
-       (string)$value->url );
+    return preg_replace(
+        '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
+        '$1-$2',
+        (string)$value->url
+    );
 }
 
 protected function getSortInfo(CoreValue $value)
@@ -279,13 +282,15 @@ In this case it is quite easy:
 - `fromHash()` will instantiate a `Tweet\Value` with the hash it receives.  
 
 ``` php
-public function fromHash( $hash )
+// eZ/Publish/FieldType/Tweet/Type.php
+
+public function fromHash($hash)
 {
-   if ( $hash === null )
-   {
-       return $this->getEmptyValue();
-   }
-   return new Value( $hash );
+    if ($hash === null) {
+        return $this->getEmptyValue();
+    }
+
+    return new Value($hash);
 }
 
 public function toHash(SPIValue $value)
@@ -293,6 +298,7 @@ public function toHash(SPIValue $value)
     if ($this->isEmptyValue($value)) {
         return null;
     }
+
     return [
         'url' => $value->url,
         'authorUrl' => $value->authorUrl,
@@ -324,12 +330,8 @@ External storage is beyond the scope of this tutorial, but many examples can be 
 You will follow a simple implementation here: the `Tweet\Value` object will be serialized as an array to the `code` property using `fromHash()` and `toHash()`:
 
 ``` php
-// Tweet\\Type
+// eZ/Publish/FieldType/Tweet/Type.php
 
-/**
- * @param \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value $value
- * @return \eZ\Publish\SPI\Persistence\Content\FieldValue
- */
 public function toPersistenceValue(SPIValue $value)
 {
     if ($value === null) {
@@ -341,6 +343,7 @@ public function toPersistenceValue(SPIValue $value)
             ]
         );
     }
+
     return new PersistenceValue(
         [
             'data' => $this->toHash($value),
@@ -348,17 +351,14 @@ public function toPersistenceValue(SPIValue $value)
         ]
     );
 }
-/**
- * @param \eZ\Publish\SPI\Persistence\Content\FieldValue $fieldValue
- * @return \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value
- */
-public function fromPersistenceValue( PersistenceValue $fieldValue )
+
+public function fromPersistenceValue(PersistenceValue $fieldValue)
 {
-    if ( $fieldValue->data === null )
-    {
+    if ($fieldValue->data === null) {
         return $this->getEmptyValue();
     }
-    return new Value( $fieldValue->data );
+
+    return new Value($fieldValue->data);
 }
 ```
 
@@ -385,10 +385,9 @@ use EzSystems\TweetFieldTypeBundle\Twitter\TwitterClientInterface;
 
 class Type extends FieldType
 {
-    /** @var TwitterClientInterface */
     protected $twitterClient;
 
-    public function __construct( TwitterClientInterface $twitterClient )
+    public function __construct(TwitterClientInterface $twitterClient)
     {
         $this->twitterClient = $twitterClient;
     }
@@ -402,27 +401,29 @@ As described above, before creating the `PersistenceValue` object in `toPersiste
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-    public function toPersistenceValue(SPIValue $value)
-    {
-        if ($value === null) {
-            return new PersistenceValue(
-                [
-                    'data' => null,
-                    'externalData' => null,
-                    'sortKey' => null,
-                ]
-            );
-        }
-        if ($value->contents === null) {
-            $value->contents = $this->twitterClient->getEmbed($value->url);
-        }
+public function toPersistenceValue(SPIValue $value)
+{
+    if ($value === null) {
         return new PersistenceValue(
             [
-                'data' => $this->toHash($value),
-                'sortKey' => $this->getSortInfo($value),
+                'data' => null,
+                'externalData' => null,
+                'sortKey' => null,
             ]
         );
     }
+
+    if ($value->contents === null) {
+        $value->contents = $this->twitterClient->getEmbed($value->url);
+    }
+
+    return new PersistenceValue(
+        [
+            'data' => $this->toHash($value),
+            'sortKey' => $this->getSortInfo($value),
+        ]
+    );
+}
 ```
 
 And that's it! When the persistence layer stores content from our type, the value will be completed with what the twitter API returns.

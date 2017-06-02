@@ -37,6 +37,7 @@ A Legacy Converter must implement the `eZ\Publish\Core\Persistence\Legacy\Conten
 // TweetFieldTypeBundle/eZ/Publish/FieldType/Tweet/LegacyConverter.php
 
 <?php
+
 namespace EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet;
 
 use eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter;
@@ -102,11 +103,11 @@ use eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition;
 
 // [...]
 
-public function toStorageFieldDefinition( FieldDefinition $fieldDef, StorageFieldDefinition $storageDef )
+public function toStorageFieldDefinition(FieldDefinition $fieldDef, StorageFieldDefinition $storageDef)
 {
 }
 
-public function toFieldDefinition( StorageFieldDefinition $storageDef, FieldDefinition $fieldDef )
+public function toFieldDefinition(StorageFieldDefinition $storageDef, FieldDefinition $fieldDef)
 {
 }
 ```
@@ -120,7 +121,7 @@ In `toFieldValue()` and `toStorageValue()` you have used the `sortKeyString` pro
 
 public function getIndexColumn()
 {
-   return 'sort_key_string';
+    return 'sort_key_string';
 }
 ```
 
@@ -128,10 +129,10 @@ public function getIndexColumn()
 
 Just like a Type, a Legacy Converter needs to be registered and tagged in the service container.
 
-The tag is `ezpublish.storageEngine.legacy.converter`, and it requires an `alias` attribute to be set to the Field Type identifier (`eztweet`). Add this block to `Resources/config/services.yml`:
+The tag is `ezpublish.storageEngine.legacy.converter`, and it requires an `alias` attribute to be set to the Field Type identifier (`eztweet`). Add this block to `Resources/config/fieldtypes.yml`:
 
 ``` yml
-# Resources/config/services.yml
+# Resources/config/fieldtypes.yml
 
 services:
 # declaration of the Fieldtype service
@@ -139,7 +140,7 @@ services:
     ezsystems.tweetbundle.fieldtype.eztweet.converter:
         class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\LegacyConverter
         tags:
-    - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
+            - {name: ezpublish.storageEngine.legacy.converter, alias: eztweet}
 ```
 
 ------------------------------------------------------------------------
