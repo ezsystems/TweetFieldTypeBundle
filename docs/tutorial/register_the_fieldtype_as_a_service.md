@@ -16,7 +16,7 @@ Inside this file, find this line:
 $loader->load('services.yml');
 ```
 
-This is where your bundle tells Symfony that when parameters are loaded, `services.yml` should be loaded from `Resources/config/` (defined above). Either replace the line, or add a new one with:
+This is where your bundle tells Symfony that when parameters are loaded, `services.yml` should be loaded from `Resources/config/` (defined above). Add a new line either before or after this one with:
 
 ``` php
 $loader->load('fieldtypes.yml');
@@ -33,7 +33,7 @@ Here is the service definition for your Tweet type:
 
 services:
     ezsystems.tweetbundle.twitter.client:
-    class: EzSystems\TweetFieldTypeBundle\Twitter\TwitterClient
+        class: EzSystems\TweetFieldTypeBundle\Twitter\TwitterClient
 ```
 
 You take care of namespacing your Field Type with your vendor and bundle name to limit the risk of naming conflicts.

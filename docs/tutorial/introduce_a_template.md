@@ -22,9 +22,9 @@ This would work as a primitive template:
 {% extends "EzPublishCoreBundle::content_fields.html.twig" %}
 
 {% block eztweet_field %}
-{% spaceless %}
-    {{ field.value.contents|raw }}
-{% endspaceless %}
+    {% spaceless %}
+        {{ field.value.contents|raw }}
+    {% endspaceless %}
 {% endblock %}
 ```
 
@@ -44,12 +44,12 @@ First, you need to make the template inherit from `content_fields.html.twig`. Th
 {% extends "EzPublishCoreBundle::content_fields.html.twig" %}
 
 {% block eztweet_field %}
-{% spaceless %}
-    {% set field_value %}
-        {{ field.value.contents|raw }}
-    {% endset %}
-    {{ block( 'simple_block_field' ) }}
-{% endspaceless %}
+    {% spaceless %}
+        {% set field_value %}
+            {{ field.value.contents|raw }}
+        {% endset %}
+        {{ block( 'simple_block_field' ) }}
+    {% endspaceless %}
 {% endblock %}
 ```
 
@@ -75,7 +75,6 @@ To do so, you are going to make your Bundle's dependency injection extension (`D
 ``` php
 // TweetFieldTypeBundle/DependencyInjection/EzSystemsTweetFieldTypeExtension.php
 
-<?php
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -89,10 +88,10 @@ class EzSystemsTweetFieldTypeExtension extends Extension implements PrependExten
 }
 ```
 
-The last thing to do is move the template mapping from `app/config/ezplatform.yml` to `Resources/config/ezpublish_field_templates.yml`:
+The last thing to do is move the template mapping from `app/config/ezplatform.yml` to `Resources/config/ez_field_templates.yml`:
 
 ``` yml
-# Resources/config/ezpublish\_field\_templates.yml
+# Resources/config/ez_field_templates.yml
 
 system:
     default:
@@ -101,6 +100,30 @@ system:
 ```
 
 Notice that the `ezpublish` yaml block was deleted. This is because you already import your configuration under the `ezpublish` namespace in the `prepend` method.
+
+##Adding eztweet_settings block
+
+Currently to be able to display a Content item you need to add twig file with eztweet_settings block. This behaviour is being resolved ([EZP-27344](https://jira.ez.no/browse/EZP-27344)), but for know you have to do two more steps.
+
+First, create new file `Resources/views/platformui/content_type/view/eztweet.html.twig` with following content:
+
+``` html
+{# TweetFieldTypeBundle/Resources/views/platformui/content_type/view/eztweet.html.twig #}
+
+{% block eztweet_settings %}
+{% endblock %}
+```
+
+Then, add its definition to your `Resources/config/ez_field_templates.yml`, so it looks like this:
+
+``` yml
+system:
+    default:
+        field_templates:
+            - {template: EzSystemsTweetFieldTypeBundle:fields:eztweet.html.twig, priority: 0}
+        fielddefinition_settings_templates:
+            - {template: EzSystemsTweetFieldTypeBundle:platformui/content_type/view:eztweet.html.twig, priority: 0}
+```
 
 You should now be able to display a Content item with this Field Type from the front office, with a fully functional embed.
 
