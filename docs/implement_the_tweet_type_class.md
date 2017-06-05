@@ -4,6 +4,8 @@ As said in the introduction, the Type class of a Field Type must implement `eZ\P
 
 All native Field Types also extend the `eZ\Publish\Core\FieldType\FieldType` abstract class that implements this interface and provides implementation facilities through a set of abstract methods of its own. In this case, Type classes implement a mix of methods from the Field Type interface and from the abstract Field Type.
 
+The recommended way to allow the Field Type to be able to generate content name is through implementing the `eZ\Publish\SPI\FieldType\Nameable` interface. It was also used in this tutorial.
+
 Let’s go over those methods and their implementation.
 
 ### Identification method
@@ -235,11 +237,11 @@ Then, if your Field Type instance’s configuration contains a `TweetValueValida
 
 ### Metadata handling methods
 
-#### `getName()` and `getSortInfo()`
+#### `getFieldName()` and `getSortInfo()`
 
 Field Types require two methods related to Field metadata:
 
-- ` getName()` is used to generate a name out of a Field value, either to name a Content item (naming pattern in legacy) or to generate a part for a URL alias.
+- ` getFieldName()` is used to generate a name out of a Field value, either to name a Content item (naming pattern in legacy) or to generate a part for a URL alias.
 
 - ` getSortInfo()` is used by the persistence layer to obtain the value it can use to sort and filter on a Field of this type
 
@@ -250,7 +252,7 @@ You can assume that this method will not be called if the Field is empty, and th
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-public function getName(SPIValue $value)
+public function getFieldName( SPIValue $value , FieldDefinition $fieldDefinition, $languageCode)
 {
     return preg_replace(
         '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
@@ -265,9 +267,19 @@ protected function getSortInfo(CoreValue $value)
 }
 ```
 
-In `getName()` you run a regular expression replace on the URL to extract the part you’re interested in.
+In `getFieldName()` you run a regular expression replace on the URL to extract the part you’re interested in.
 
 This name is a perfect match for `getSortInfo()` as it allows you to sort by the tweet’s author and by the tweet’s ID.
+
+In the `eZ\Publish\SPI\FieldType\FieldType` interface there is also `getName()` method that is currently deprecated and replaced by `getFieldName()`. You can throw an exception in its body to make sure it isn't called anywhere:
+```php
+public function getName(SPIValue $value)
+{
+    throw new \RuntimeException(
+        'Name generation provided via NameableField set via "ezpublish.fieldType.nameable" service tag'
+    );
+}
+```
 
 ### Field Type serialization methods
 
