@@ -103,7 +103,7 @@ Notice that the `ezpublish` yaml block was deleted. This is because you already 
 
 ##Adding eztweet_settings block
 
-Currently to be able to display a Content item you need to add twig file with eztweet_settings block. This behaviour is being resolved ([EZP-27344](https://jira.ez.no/browse/EZP-27344)), but for know you have to do two more steps.
+Currently to be able to display a Content item you need to add a twig file with an `eztweet_settings` block. This behavior is being resolved ([EZP-27344](https://jira.ez.no/browse/EZP-27344)), but for now you have to do two more steps.
 
 First, create new file `Resources/views/platformui/content_type/view/eztweet.html.twig` with following content:
 

@@ -67,7 +67,7 @@ Tests/
 ```
 
 Feel free to delete the Controller folder, since you won’t use it in this tutorial. It could have been useful, had our Field Type required an interface of its own.
-Also, you can safely delete Resources/views/Default folder and Resources/config/routing.yml file, as they won't be needed. You should remove "ez_systems_tweet_field_type" entry in your app/config/routing.yml file as well.
+Also, you can safely delete the `Resources/views/Default` folder and `Resources/config/routing.yml` file, as they won't be needed. You should remove the `ez_systems_tweet_field_type` entry from your app/config/routing.yml file as well.
 
 The tests aren't part of the documentation, but you can find them in the repository. 
 
