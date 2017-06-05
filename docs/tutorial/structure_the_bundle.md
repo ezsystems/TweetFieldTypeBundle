@@ -23,7 +23,7 @@ A Field Type requires two base classes: `Type` and `Value`.
 ### The Type class
 
 The Type contains the logic of the Field Type: validating data, transforming from various formats, describing the validators, etc.
-A Type class must implement `eZ\Publish\SPI\FieldType\FieldType`. It may also extend the `eZ\Publish\Core\FieldType\FieldType` abstract class.
+A Type class must implement `eZ\Publish\SPI\FieldType\FieldType`. It may also extend the `eZ\Publish\Core\FieldType\FieldType` abstract class. It should also implement the `eZ\Publish\SPI\FieldType\Nameable` interface.
 
 ### The Value class
 
