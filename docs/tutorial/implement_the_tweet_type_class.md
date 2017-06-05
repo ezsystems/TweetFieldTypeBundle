@@ -81,157 +81,40 @@ public function getEmptyValue()
 
 If you ran the unit tests at this point, you would get about five failures, all of them on the `fromHash()` or `toHash()` methods. You'll handle them later.
 
-### Validation methods
+### Validation
 
-#### `validateValidatorConfiguration()` and `validate()`
+The Type class is also responsible for validating input data (to a `Field`), as well as configuration input data (to a `FieldDefinition`). In this tutorial, we will validate submitted urls, ensuring they actually reference a Twitter status.
 
-The Type class is also responsible for validating input data (to a `Field`), as well as configuration input data (to a `FieldDefinition`). In this tutorial, we will run two validation operations on input data:
-
-- validate submitted urls, ensuring they actually reference a Twitter status;
-- limit input to a known list of authors, as an optional validation step.
-
-`validateValidatorConfiguration()` will be called when an instance of the Field Type is added to a Content Type, to ensure that the validator configuration is valid.
-
-For the validator schema configuration, you can add:
+`validate()` is the method that runs the validation on data, when a Content item is created with a Field of this type:
 
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
 
-protected $validatorConfigurationSchema = array(
-    'TweetUrlValidator' => array(),
-    'TweetAuthorValidator' => array(
-            'AuthorList' => array(
-                 'type' => 'array',
-                 'default' => array()
-        )
-    )
-);
-```
-
-For a TextLine (length validation), it means checking that both min length and max length are positive integers, and that min is lower than max.
-
-When an instance of the type is added to a Content Type, `validateValidatorConfiguration()` receives the configuration for the validators used by the Type as an array. It must return an array of error messages if errors are found in the configuration, and an empty array if no errors were found.
-
-For TextLine, the provided array looks like this:
-
-``` php
-// eZ/Publish/FieldType/Tweet/Type.php
-
-array(
-   'StringLengthValidator' => array(
-       'minStringLength' => 0,
-       'maxStringLength' => 100
-   )
-);
-```
-
-The structure of this array is totally free, and up to each type implementation. In this tutorial it will mimic what is done in native Field Types:
-
-Each level one key is the name of a validator, as acknowledged by the Type. That key contains a set of parameter name / parameter value rows. You must check that:
-
-- all the validators in this array are known to the type
-- arguments for those validators are valid and have sane values
-
-You do not need to include mandatory validators if they don’t have options. Here is an example of what your Type expects as validation configuration:
-
-``` php
-array(
-   ‘TweetAuthorValidator’ => array(
-       ‘AuthorList’ => array( ‘johndoe’, ‘janedoe’ )
-   )
-);
-```
-
-The configuration says that tweets must be either by `johndoe` or by `janedoe`. If you had not provided `TweetAuthorValidator` at all, it would have been ignored.
-
-You will iterate over the items in `$validatorConfiguration` and:
-
-- add errors for those you don’t know about;
-- check that provided arguments are known and valid:
-  - `TweetAuthorValidator` accepts a non-empty array of valid Twitter usernames
-
-``` php
-// eZ/Publish/FieldType/Tweet/Type.php
-
-public function validateValidatorConfiguration( $validatorConfiguration )
+public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
 {
-    $validationErrors = array();
-    foreach ($validatorConfiguration as $validatorIdentifier => $constraints) {
-        // Report unknown validators
-        if ($validatorIdentifier !== 'TweetValueValidator') {
-            $validationErrors[] = new ValidationError("Validator '$validatorIdentifier' is unknown");
-            continue;
-        }
-        // Validate arguments from TweetValueValidator
-        foreach ($constraints as $name => $value) {
-            switch ($name) {
-                case 'authorList':
-                    if (!is_array($value)) {
-                        $validationErrors[] = new ValidationError("Invalid authorList argument");
-                    }
+    $errors = [];
 
-                    foreach ($value as $authorName) {
-                        if (!preg_match('/^[a-z0-9_]{1,15}$/i', $authorName)) {
-                            $validationErrors[] = new ValidationError("Invalid twitter username");
-                        }
-                    }
-                    break;
-                default:
-                    $validationErrors[] = new ValidationError("Validator parameter '$name' is unknown");
-            }
-        }
+    if ($this->isEmptyValue($fieldValue)) {
+        return $errors;
     }
-    return $validationErrors;
+
+    // Tweet Url validation
+    if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
+        $errors[] = new ValidationError(
+            'Invalid twitter status url %url%',
+            null,
+            ['%url%' => $fieldValue->url]
+        );
+
+    }
+
+    return $errors;
 }
 ```
 
-`validate()` is the method that runs the actual validation on data, when a Content item is created with a Field of this type:
+You validate the URL with a regular expression. If it doesn’t match, you add an instance of `ValidationError` to the return array. Note that the tested value isn’t directly embedded in the message but passed as an argument. This ensures that the variable is properly encoded in order to prevent attacks, and allows for singular/plural phrases using the second parameter.
 
-``` php
-// eZ/Publish/FieldType/Tweet/Type.php
-
-/**
- * Validates a field based on the validators in the field definition.
- *
- * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
- *
- * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $fieldDefinition
- * The field definition of the field
- * @param Value $fieldValue The field value for which an action is performed
- *
- * @return \eZ\Publish\SPI\FieldType\ValidationError[]
- */
-    public function validate(FieldDefinition $fieldDefinition, SPIValue $fieldValue)
-    {
-        $errors = [];
-        if ($this->isEmptyValue($fieldValue)) {
-            return $errors;
-        }
-        // Tweet Url validation
-        if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
-            $errors[] = new ValidationError(
-                'Invalid twitter status url %url%',
-                null,
-                ['%url%' => $fieldValue->url]
-            );
-            return $errors;
-        }
-        $author = $m[1];
-        $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
-        if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
-            $errors[] = new ValidationError(
-                'Twitter user %user% is not in the approved author list',
-                null,
-                ['%user%' => $m[1]]
-            );
-        }
-        return $errors;
-    }
-```
-
-First, you validate the URL with a regular expression. If it doesn’t match, you add an instance of `ValidationError` to the return array. Note that the tested value isn’t directly embedded in the message but passed as an argument. This ensures that the variable is properly encoded in order to prevent attacks, and allows for singular/plural phrases using the second parameter.
-
-Then, if your Field Type instance’s configuration contains a `TweetValueValidator` key, you will check that the username in the status URL matches one of the valid authors.
+We will create more advanced custom validation later in the tutorial.
 
 ### Metadata handling methods
 
