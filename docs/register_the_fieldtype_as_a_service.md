@@ -49,6 +49,7 @@ services:
         class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type
         tags:
             - {name: ezpublish.fieldType, alias: eztweet}
+            - {name: ezpublish.fieldType.nameable, alias: eztweet}
         arguments: ['@ezsystems.tweetbundle.twitter.client']
 ```
 
