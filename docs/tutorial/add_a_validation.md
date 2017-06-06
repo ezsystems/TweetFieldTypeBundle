@@ -6,7 +6,7 @@ We want to add the option to configure list of authors from which the tweets are
 - add field definition edit view
 - implement `toStorageFieldDefinition()` and `toFieldDefinition()` methods in LegacyConverter
 
-### Implement `validateValidatorConfiguration()` and `validate()` methods in the Type class
+## Implement `validateValidatorConfiguration()` and `validate()` methods in the Type class
 
 `validateValidatorConfiguration()` will be called when an instance of the Field Type is added to a Content Type, to ensure that the validator configuration is valid.
 
@@ -151,7 +151,7 @@ private function isAuthorApproved($author, $validatorConfiguration)
 
 In addition to validating the URL with a regular expression, which we implemented before, if your Field Type instance’s configuration contains a `TweetValueValidator` key, you will check that the username in the status URL matches one of the valid authors.
 
-### Implement FormMapper
+## Implement FormMapper
 
 Next, we need to create a way for user to input a list of authors for our validation. To achieve this, we need to implement a FormMapper that allows us to add an input field to form with content field definition.
 The most basic one looks like the following:
@@ -238,7 +238,7 @@ Next thing is to register the FormMapper as a service, so the system would know 
             - {name: ez.fieldFormMapper.definition, fieldType: eztweet}
 ```
 
-### Add field definition edit view
+## Add field definition edit view
 
 We have the new part of the form defined, but we still need to show it to the user. To do that, we need to create file containing the view:
 ```html
@@ -261,7 +261,7 @@ Also, we need to register it by editing the file `ez_field_templates.yml`:
             - {template: EzSystemsTweetFieldTypeBundle:platformui/content_type/edit:eztweet.html.twig, priority: 0}
 ```
 
-### Implement `toStorageFieldDefinition()` and `toFieldDefinition()` methods in LegacyConverter
+## Implement `toStorageFieldDefinition()` and `toFieldDefinition()` methods in LegacyConverter
 
 The last thing to do is to make sure that validation data is properly saved into and retrieved from the database. To achieve this, we need to implement these two functions in LegacyConverter file:
 ```php
