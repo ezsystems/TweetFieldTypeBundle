@@ -291,3 +291,5 @@ public function toFieldDefinition(StorageFieldDefinition $storageDef, FieldDefin
 
 You should now be able to configure list of authors when editing Content Type with Tweet Field Type.
 You should also have your tweets validated in accordance to this list when you create or edit Content Item with this Field Type. 
+
+⬅ Previous: [Introduce a template](introduce_a_template.md)
