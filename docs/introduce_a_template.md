@@ -133,4 +133,4 @@ You should now be able to display a Content item with this Field Type from the f
 
 ⬅ Previous: [Implement the Legacy Storage Engine Converter](implement_the_legacy_storage_engine_converter.md)
 
-Next: [Add a validation](add_a_validation.md) ➡
+Next: [Add content and edit views](add_content_and_edit_views.md) ➡
