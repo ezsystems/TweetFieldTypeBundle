@@ -43,12 +43,11 @@ YUI.add('ez-tweet-editview', function (Y) {
         },
 
         /**
-         * Defines the variables to imported in the field edit template for text
-         * line.
+         * Defines the variables to imported in the field edit template for tweet.
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired, maxLength and minLength
+         * @return {Object} containing isRequired
          * entries
          */
         _variables: function () {
