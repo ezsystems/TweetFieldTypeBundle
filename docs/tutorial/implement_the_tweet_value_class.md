@@ -33,7 +33,7 @@ You will end up with the following properties:
 public $url;
 
 /**
- * Author's tweet URL (http://twitter.com/UserName)
+ * Author's Twitter URL (https://twitter.com/UserName)
  *
  * @var string
  */
