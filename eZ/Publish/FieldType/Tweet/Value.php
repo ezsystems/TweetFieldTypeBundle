@@ -20,7 +20,7 @@ class Value extends BaseValue
     public $url;
 
     /**
-     * Author's tweet URL (http://twitter.com/UserName)
+     * Author's Twitter URL (https://twitter.com/UserName)
      *
      * @var string
      */
