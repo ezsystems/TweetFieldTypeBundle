@@ -99,7 +99,7 @@ For the validator schema configuration, you can add:
 
 protected $validatorConfigurationSchema = array(
     'TweetUrlValidator' => array(),
-    'TweetAuthorValidator' => array(
+    'TweetValueValidator' => array(
             'AuthorList' => array(
                  'type' => 'array',
                  'default' => array()
@@ -135,20 +135,28 @@ Each level one key is the name of a validator, as acknowledged by the Type. That
 You do not need to include mandatory validators if they don’t have options. Here is an example of what your Type expects as validation configuration:
 
 ``` php
-array(
-   ‘TweetAuthorValidator’ => array(
-       ‘AuthorList’ => array( ‘johndoe’, ‘janedoe’ )
-   )
-);
+    protected $validatorConfigurationSchema = [
+        'TweetValueValidator' => [
+            'authorList' => [
+                'type' => 'array',
+                'default' => []
+            ]
+        ]
+    ];
 ```
 
-The configuration says that tweets must be either by `johndoe` or by `janedoe`. If you had not provided `TweetAuthorValidator` at all, it would have been ignored.
+The configuration says that tweets must be either by `johndoe` or by `janedoe`. If you had not provided `TweetValueValidator` at all, it would have been ignored.
 
 You will iterate over the items in `$validatorConfiguration` and:
 
 - add errors for those you don’t know about;
 - check that provided arguments are known and valid:
-  - `TweetAuthorValidator` accepts a non-empty array of valid Twitter usernames
+  - `TweetValueValidator` accepts a non-empty array of valid Twitter usernames
+
+```
+This example will work only with TweetValueValidator, as others will generate validation exception. 
+```
+
 
 ``` php
 // eZ/Publish/FieldType/Tweet/Type.php
