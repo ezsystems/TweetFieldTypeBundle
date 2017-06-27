@@ -102,7 +102,9 @@ system:
 
 Notice that the `ezpublish` yaml block was deleted. This is because you already import your configuration under the `ezpublish` namespace in the `prepend` method.
 
-You should now be able to display a Content item with this Field Type from the front office, with a fully functional embed.
+You should now be able to display a Content item with this Field Type from the front office, with a fully functional embed:
+
+![Final result of the tutorial](images/fieldtype_tutorial_result.png)
 
 ------------------------------------------------------------------------
 
