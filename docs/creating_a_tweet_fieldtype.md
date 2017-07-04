@@ -65,4 +65,6 @@ Viewing and editing values of the Field Type in PlatformUI requires that you ext
 
 You should ideally read the general [extensibility documentation for PlatformUI](https://doc.ez.no/display/DEVELOPER/Extending+eZ+Platform+UI). You can find information about view templates [in the next tutorial](https://doc.ez.no/display/DEVELOPER/Define+a+View). Edit templates are not documented at the time of writing, but [Netgen](http://www.netgenlabs.com/) has published a tutorial that covers the topic: (http://www.netgenlabs.com/Blog/Adding-support-for-a-new-field-type-to-eZ-Publish-Platform-UI).
 
+![Final result of the tutorial](images/fieldtype_tutorial_result.png)
+
 [Start the tutorial](build_the_bundle.md) ➡
