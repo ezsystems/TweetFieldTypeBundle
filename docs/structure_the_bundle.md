@@ -7,7 +7,9 @@ Each Field Type has its own subfolder: `TextLine`, `Email`, `Url`, etc.
 
 Clone this GitHub repository to follow this tutorial, it will be useful: (https://github.com/ezsystems/TweetFieldTypeBundle).
 
-You will use a structure quite close to this.
+You will use a structure quite close to this:
+
+![Bundle structure](images/fieldtype_tutorial_repo.png)
 
 From the tutorial git repository, list the contents of the `eZ/Publish/FieldType` folder:
 
