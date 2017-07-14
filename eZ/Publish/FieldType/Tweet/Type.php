@@ -223,10 +223,10 @@ class Type extends FieldType
             return $errors;
         }
 
-        // Tweet Url validation
+        // Tweet URL validation
         if (!preg_match('#^https?://twitter.com/([^/]+)/status/[0-9]+$#', $fieldValue->url, $m)) {
             $errors[] = new ValidationError(
-                'Invalid twitter status url %url%',
+                'Invalid Twitter status URL %url%',
                 null,
                 ['%url%' => $fieldValue->url]
             );
