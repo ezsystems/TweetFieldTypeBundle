@@ -49,10 +49,8 @@ class Type extends FieldType implements Nameable
      */
     public function getName(SPIValue $value)
     {
-        return preg_replace(
-            '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
-            '$1-$2',
-            (string)$value->url
+        throw new \RuntimeException(
+            'Name generation provided via NameableField set via "ezpublish.fieldType.nameable" service tag'
         );
     }
 
@@ -253,5 +251,21 @@ class Type extends FieldType implements Nameable
         return !isset($validatorConfiguration['TweetValueValidator'])
             || empty($validatorConfiguration['TweetValueValidator']['authorList'])
             || in_array($author, $validatorConfiguration['TweetValueValidator']['authorList']);
+    }
+
+    /**
+     * @param \EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value $value
+     * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $fieldDefinition
+     * @param string $languageCode
+     *
+     * @return string
+     */
+    public function getFieldName(SPIValue $value, FieldDefinition $fieldDefinition, $languageCode)
+    {
+        return preg_replace(
+            '#^https?://twitter\.com/([^/]+)/status/([0-9]+)$#',
+            '$1-$2',
+            (string)$value->url
+        );
     }
 }
