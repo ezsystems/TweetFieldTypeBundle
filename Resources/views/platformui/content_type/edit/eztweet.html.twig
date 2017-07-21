@@ -1,0 +1,7 @@
+{% block eztweet_field_definition_edit %}
+    <div class="eztweet-validator author_list{% if group_class is not empty %} {{ group_class }}{% endif %}">
+        {{- form_label(form.authorList) -}}
+        {{- form_errors(form.authorList) -}}
+        {{- form_widget(form.authorList) -}}
+    </div>
+{% endblock %}
