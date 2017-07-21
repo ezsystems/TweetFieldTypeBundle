@@ -23,6 +23,15 @@ class Type extends FieldType implements Nameable
     /** @var TwitterClientInterface */
     protected $twitterClient;
 
+    protected $validatorConfigurationSchema = [
+        'TweetValueValidator' => [
+            'authorList' => [
+                'type' => 'array',
+                'default' => []
+            ]
+        ]
+    ];
+
     public function __construct(TwitterClientInterface $twitterClient)
     {
         $this->twitterClient = $twitterClient;
@@ -161,6 +170,39 @@ class Type extends FieldType implements Nameable
         return new Value($fieldValue->data);
     }
 
+    public function validateValidatorConfiguration($validatorConfiguration)
+    {
+        $validationErrors = [];
+
+        foreach ($validatorConfiguration as $validatorIdentifier => $constraints) {
+            // Report unknown validators
+            if ($validatorIdentifier !== 'TweetValueValidator') {
+                $validationErrors[] = new ValidationError("Validator '$validatorIdentifier' is unknown");
+                continue;
+            }
+
+            // Validate arguments from TweetValueValidator
+            foreach ($constraints as $name => $value) {
+                switch ($name) {
+                    case 'authorList':
+                        if (!is_array($value)) {
+                            $validationErrors[] = new ValidationError('Invalid authorList argument');
+                        }
+                        foreach ($value as $authorName) {
+                            if (!preg_match('/^[a-z0-9_]{1,15}$/i', $authorName)) {
+                                $validationErrors[] = new ValidationError('Invalid twitter username');
+                            }
+                        }
+                        break;
+                    default:
+                        $validationErrors[] = new ValidationError("Validator parameter '$name' is unknown");
+                }
+            }
+        }
+
+        return $validationErrors;
+    }
+
     /**
      * Validates a field based on the validators in the field definition.
      *
@@ -187,9 +229,28 @@ class Type extends FieldType implements Nameable
                 null,
                 ['%url%' => $fieldValue->url]
             );
+
+            return $errors;
+        }
+
+        $author = $m[1];
+        $validatorConfiguration = $fieldDefinition->getValidatorConfiguration();
+        if (!$this->isAuthorApproved($author, $validatorConfiguration)) {
+            $errors[] = new ValidationError(
+                'Twitter user %user% is not in the approved author list',
+                null,
+                ['%user%' => $m[1]]
+            );
         }
 
         return $errors;
+    }
+
+    private function isAuthorApproved($author, $validatorConfiguration)
+    {
+        return !isset($validatorConfiguration['TweetValueValidator'])
+            || empty($validatorConfiguration['TweetValueValidator']['authorList'])
+            || in_array($author, $validatorConfiguration['TweetValueValidator']['authorList']);
     }
 
     /**
