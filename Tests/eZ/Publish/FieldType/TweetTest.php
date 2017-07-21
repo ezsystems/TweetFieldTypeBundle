@@ -10,6 +10,7 @@ namespace EzSystems\TweetFieldTypeBundle\Tests\eZ\Publish\FieldType;
 
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
 use eZ\Publish\Core\FieldType\Tests\FieldTypeTest;
+use eZ\Publish\Core\FieldType\ValidationError;
 use eZ\Publish\SPI\FieldType\Value as SPIValue;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Type as TweetType;
 use EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\Value as TweetValue;
@@ -43,7 +44,14 @@ class TweetTest extends FieldTypeTest
 
     protected function getValidatorConfigurationSchemaExpectation()
     {
-        return [];
+        return [
+            'TweetValueValidator' => [
+                'authorList' => [
+                    'type' => 'array',
+                    'default' => []
+                ]
+            ]
+        ];
     }
 
     protected function getSettingsSchemaExpectation()
@@ -208,14 +216,78 @@ class TweetTest extends FieldTypeTest
 
     public function provideValidDataForValidate()
     {
-        // @todo implement me
-        return [];
+        return [
+            [
+                [
+                    'validatorConfiguration' => [
+                        'TweetValueValidator' => [
+                            'authorList' => ['user']
+                        ]
+                    ]
+                ],
+                new TweetValue('https://twitter.com/user/status/123456789')
+            ],
+            [
+                [
+                    'validatorConfiguration' => [
+                        'TweetValueValidator' => [
+                            'authorList' => ['anotherUser', 'user']
+                        ]
+                    ]
+                ],
+                new TweetValue('https://twitter.com/user/status/123456789')
+            ],
+            [
+                [
+                    'validatorConfiguration' => [
+                        'TweetValueValidator' => [
+                            'authorList' => []
+                        ]
+                    ]
+                ],
+                new TweetValue('https://twitter.com/user/status/123456789')
+            ]
+        ];
     }
 
     public function provideInvalidDataForValidate()
     {
-        // @todo implement me
-        return [];
+        return [
+            [
+                [
+                    'validatorConfiguration' => [
+                        'TweetValueValidator' => [
+                            'authorList' => ['anotherUser']
+                        ]
+                    ]
+                ],
+                new TweetValue('https://twitter.com/user/status/123456789'),
+                [
+                    new ValidationError(
+                        'Twitter user %user% is not in the approved author list',
+                        null,
+                        ['%user%' => 'user']
+                    )
+                ]
+            ],
+            [
+                [
+                    'validatorConfiguration' => [
+                        'TweetValueValidator' => [
+                            'authorList' => ['user']
+                        ]
+                    ]
+                ],
+                new TweetValue('https://test.com/user/status/123456789'),
+                [
+                    new ValidationError(
+                        'Invalid Twitter status URL %url%',
+                        null,
+                        ['%url%' => 'https://test.com/user/status/123456789']
+                    )
+                ]
+            ]
+        ];
     }
 
     /**
