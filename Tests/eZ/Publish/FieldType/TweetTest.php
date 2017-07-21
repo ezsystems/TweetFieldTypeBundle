@@ -187,7 +187,7 @@ class TweetTest extends FieldTypeTest
     private function getTwitterClientMock()
     {
         if ($this->twitterClientMock === null) {
-            $this->twitterClientMock = $this->getMock(TwitterClientInterface::class);
+            $this->twitterClientMock = $this->getMockBuilder(TwitterClientInterface::class)->getMock();
         }
 
         return $this->twitterClientMock;
