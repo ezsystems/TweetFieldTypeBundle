@@ -8,6 +8,7 @@ declare -a commits=(
     "Register the Field Type as a service"
     "Implement the Legacy Storage Engine Converter"
     "Add field view and field definition view templates"
+    "Add a validation"
     )
 declare -a tags=(
     "step1_create_the_bundle"
@@ -17,6 +18,7 @@ declare -a tags=(
     "step5_register_the_field_type_as_a_service"
     "step6_implement_the_legacy_storage_engine_converter"
     "step7_add_field_view_and_field_definition_view_templates"
+    "step8_add_a_validation"
     )
 
 numberOfCommits=${#commits[@]}
