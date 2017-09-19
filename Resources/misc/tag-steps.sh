@@ -30,6 +30,12 @@ do
     fi
 done
 
-git push --tags --force
+echo "Tags created."
 
-echo "Tags created and pushed."
+read -p "Do you want to push tags to a remote repository? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    git push --tags --force
+    echo "Tags pushed."
+fi
