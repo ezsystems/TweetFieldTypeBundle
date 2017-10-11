@@ -66,6 +66,18 @@ Resources/
 Tests/
 ```
 
+If the `generate:bundle` command returns an error about registering the bundle namespace in composer.json, add the following line to your composer.json file within the psr-4 section:
+
+```
+"EzSystems\\TweetFieldTypeBundle\\": "src/EzSystems/TweetFieldTypeBundle/"
+```
+
+Then execute the following command to regenerate the autoload files:
+
+```
+$ composer dump-autoload
+```
+
 Feel free to delete the Controller folder, since you won’t use it in this tutorial. It could have been useful, had our Field Type required an interface of its own.
 Also, you can safely delete the `Resources/views/Default` folder and `Resources/config/routing.yml` file, as they won't be needed. You should remove the `ez_systems_tweet_field_type` entry from your app/config/routing.yml file as well.
 
