@@ -7,7 +7,7 @@ We have a [Bug Tracker](https://jira.ez.no) and you can talk to a human on eZ Co
 
 # Development Guidelines
 
-Our Development Guidelines are available on this page: https://doc.ez.no/display/DEVELOPER/Development+guidelines
+Our Development Guidelines are available on this page: https://doc.ezplatform.com/en/latest/community_resources/contributing/#development-guidelines
 
 ## Topics covered by the Guidelines
 
@@ -25,4 +25,4 @@ Our Development Guidelines are available on this page: https://doc.ez.no/display
   * Transactions
   * Limitations in the SQL dialect supported
   
-  _See the complete version online on: https://doc.ez.no/display/DEVELOPER/How+to+Contribute_
+  _See the complete version online on: https://doc.ezplatform.com/en/latest/community_resources/contributing/_

@@ -1,13 +1,13 @@
 # Field Type Tutorial
 
-This repository contains the bundle that is created in the [Field Type Tutorial](https://doc.ez.no/x/hpTfAQ).
+This repository contains the bundle that is created in the [Field Type Tutorial](https://doc.ezplatform.com/en/latest/tutorials/field_type/creating_a_tweet_field_type/).
 
 ## About the tutorial
 
 This tutorial covers the creation and development of a custom eZ Platform Field Type on the example of a Tweet Field Type. The Field will:
 
 - Accept as input the URL of a tweet (`https://twitter.com/<username>/status/<id>`)
-- Fetch the tweet using the Twitter oEmbed API (https://dev.twitter.com/docs/embedded-tweets)
+- Fetch the tweet using the Twitter oEmbed API (https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed)
 - Store the tweet’s embed contents and URL
 - Display the tweet's embedded version when displaying the field from a template
 
