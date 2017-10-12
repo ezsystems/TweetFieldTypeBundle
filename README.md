@@ -29,7 +29,7 @@ The example Content Object can be created from CLI using the following command:
 php app/console ezsystems:tweet-fieldtype:create-content
 ```
 
-Alternatively, you can use REST API. Content Type creation example using curl (requires enabling basic auth based configuration: https://doc.ez.no/display/DEVELOPER/Getting+started+with+the+REST+API#GettingstartedwiththeRESTAPI-Authentication):
+Alternatively, you can use REST API. Content Type creation example using curl (requires enabling basic auth based configuration: https://doc.ezplatform.com/en/latest/api/rest_api_guide/#authentication):
 ```bash
 curl -u "admin:publish" -i -H "Accept: application/vnd.ez.api.ContentType+xml" \
 -H "Content-Type: application/vnd.ez.api.ContentTypeCreate+xml" \
