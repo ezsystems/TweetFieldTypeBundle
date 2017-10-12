@@ -1,8 +1,8 @@
 # Create the bundle
 
-Once you have [installed eZ Platform](https://doc.ez.no/x/opPfAQ), including the creation of a database for the tutorial, [configured your server](https://doc.ez.no/pages/viewpage.action?pageId=31429536), and [started your web server](https://doc.ez.no/display/DEVELOPER/Web+Server), you need to create a code base for the tutorial.
+Once you have [installed eZ Platform](https://doc.ezplatform.com/en/latest/getting_started/install_ez_platform/), including the creation of a database for the tutorial, [configured your server](https://doc.ezplatform.com/en/latest/getting_started/requirements_and_system_configuration/), and [started your web server](https://doc.ezplatform.com/en/latest/getting_started/starting_ez_platform/#web-server), you need to create a code base for the tutorial.
 
-We will use [the Symfony 2 extension mechanism, bundles,](http://symfony.com/doc/current/cookbook/bundles/index.html) to wrap the Fieldtype. You can get started with a bundle using the built-in Symfony 2 bundle generator, following the instructions on this page.
+We will use [the Symfony 2 extension mechanism, bundles,](http://symfony.com/doc/current/bundles.html) to wrap the Fieldtype. You can get started with a bundle using the built-in Symfony 2 bundle generator, following the instructions on this page.
 Then you will configure your Bundle to be able to write the code you need to create a Field Type.
 
 The [tutorial's Github repository](https://github.com/ezsystems/TweetFieldTypeBundle) shows you the Bundle in a finished state.
@@ -27,7 +27,7 @@ Next you will be asked about the namespace of your bundle.
 
 #### More about naming bundles
 
-See (http://symfony.com/doc/current/cookbook/bundles/best_practices.html#bundle-name) for more details on bundle naming conventions.
+See (http://symfony.com/doc/current/bundles/best_practices.html#bundle-name) for more details on bundle naming conventions.
 
 Put **EzSystems/TweetFieldTypeBundle** as Bundle namespace, then the name of the bundle will be hinted from this entry.
 

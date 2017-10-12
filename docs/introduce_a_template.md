@@ -1,6 +1,6 @@
 # Introduce a template
 
-In order to display data of your Field Type from templates, you need to create and register a template for it. You can find documentation about [FieldType templates](https://doc.ez.no/display/DEVELOPER/Field+Type+template), as well as on [importing settings from a bundle](https://doc.ez.no/display/DEVELOPER/Importing+settings+from+a+bundle).
+In order to display data of your Field Type from templates, you need to create and register a template for it. You can find documentation about [FieldType templates](https://doc.ezplatform.com/en/latest/api/field_type_api_and_best_practices/#field-type-template), as well as on [importing settings from a bundle](https://doc.ezplatform.com/en/latest/cookbook/importing_settings_from_a_bundle/).
 
 In short, such a template must:
 
@@ -10,7 +10,7 @@ In short, such a template must:
 
 ## The template:` Resources/views/fields/eztweet.html.twig`
 
-The first thing to do is create the template. It will basically define the default display of a tweet. Remember that [field type templates can be overridden](https://confluence.ez.no/display/DEVELOPER/ez_render_field#ez_render_field-Overrideafieldtemplateblock) in order to tweak what is displayed and how.
+The first thing to do is create the template. It will basically define the default display of a tweet. Remember that [field type templates can be overridden](https://doc.ezplatform.com/en/latest/guide/content_rendering/#override-a-field-template-block) in order to tweak what is displayed and how.
 
 Each Field Type template receives a set of variables that can be used to achieve the desired goal. The variable you care about is `field`, an instance of `eZ\Publish\API\Repository\Values\Content\Field`. In addition to its own metadata (`id`, `fieldDefIdentifier`, etc.), it exposes the Field Value (`Tweet\Value`) through the `value` property.
 
@@ -57,7 +57,7 @@ First, you need to make the template inherit from `content_fields.html.twig`. Th
 
 ## Registering the template
 
-As explained in the [FieldType template documentation](https://confluence.ez.no/display/DEVELOPER/Field+Type+template#FieldTypetemplate-Registeringyourtemplate), a Field Type template needs to be registered in the eZ Platform semantic configuration. The most basic way to do this would be to do so in `app/config/ezplatform.yml`:
+As explained in the [FieldType template documentation](https://doc.ezplatform.com/en/latest/api/field_type_api_and_best_practices/#registering-your-template), a Field Type template needs to be registered in the eZ Platform semantic configuration. The most basic way to do this would be to do so in `app/config/ezplatform.yml`:
 
 ``` yml
 # app/config/ezplatform.yml

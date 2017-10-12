@@ -215,7 +215,7 @@ The role of those mapping methods is to convert a `Value` of the Field Type into
 
 ##### About external storage
 
-Whatever is stored in `externalData` requires an external storage handler to be written. Read more about external storage in [Field Type API and best practices](https://doc.ez.no/display/DEVELOPER/Field+Type+API+and+best+practices).
+Whatever is stored in `externalData` requires an external storage handler to be written. Read more about external storage in [Field Type API and best practices](https://doc.ezplatform.com/en/latest/api/field_type_api_and_best_practices/).
 
 External storage is beyond the scope of this tutorial, but many examples can be found in existing Field Types.
 

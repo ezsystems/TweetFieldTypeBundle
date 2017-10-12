@@ -4,8 +4,8 @@
 
 The code created in this tutorial is available on GitHub: (https://github.com/ezsystems/TweetFieldTypeBundle).
 
-This tutorial covers the creation and development of a custom eZ Platform [Field Type](https://doc.ez.no/display/DEVELOPER/Field+Types+reference).
-Field Types are the smallest building blocks of content. eZ Platform comes with about [30 native types](https://doc.ez.no/display/DEVELOPER/Field+Types+reference) that cover most common needs (Text line, Rich text, Email, Author list, Content relation, Map location, Float, etc.)
+This tutorial covers the creation and development of a custom eZ Platform [Field Type](https://doc.ezplatform.com/en/latest/guide/field_type_reference/).
+Field Types are the smallest building blocks of content. eZ Platform comes with about [30 native types](https://doc.ezplatform.com/en/latest/guide/field_type_reference/) that cover most common needs (Text line, Rich text, Email, Author list, Content relation, Map location, Float, etc.)
 
 Field Types are responsible for:
 
@@ -16,7 +16,7 @@ Field Types are responsible for:
 
 Custom Field Types are a very powerful type of extension, since they allow you to hook deep into the content model.
 
-You can find the in-depth [documentation about Field Types and their best practices here](https://doc.ez.no/display/DEVELOPER/Field+Type+API+and+best+practices). It describes how each component of a Field Type interacts with the various layers of the system, and how to implement those.
+You can find the in-depth [documentation about Field Types and their best practices here](https://doc.ezplatform.com/en/latest/api/field_type_api_and_best_practices/). It describes how each component of a Field Type interacts with the various layers of the system, and how to implement those.
 
 ## Intended audience
 
@@ -27,13 +27,13 @@ This tutorial is aimed at developers who are familiar with eZ Platform and are c
 This tutorial will demonstrate how to create a Field Type on the example of a *Tweet* Field Type. It will:
 
 - Accept as input the URL of a tweet (https://twitter.com/{username}/status/{id})
-- Fetch the tweet using the Twitter oEmbed API (https://dev.twitter.com/docs/embedded-tweets)
+- Fetch the tweet using the Twitter oEmbed API (https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed)
 - Store the tweet’s embed contents and URL
 - Display the tweet's embedded version when displaying the field from a template
 
 ## Preparation
 
-To start the tutorial, you need to make a clean eZ Platform installation. Follow the guide for your system from [Step 1: Installation](https://doc.ez.no/display/DEVELOPER/Step+1%3A+Installation). Remember to install using the `dev` environment.
+To start the tutorial, you need to make a clean eZ Platform installation. Follow the guide for your system from [Step 1: Installation](https://doc.ezplatform.com/en/latest/getting_started/install_ez_platform/). Remember to install using the `dev` environment.
 
 ## Steps
 
@@ -56,13 +56,15 @@ Read more about [implementing the Legacy Storage Engine Converter](implement_the
 
 #### 4. Templating
 
-Displaying a Field Type's data is done through a [Twig template](http://twig.sensiolabs.org/doc/intro.html).
+Displaying a Field Type's data is done through a [Twig template](https://twig.symfony.com/doc/2.x/intro.html).
 Read more about [implementing the Field Type template](introduce_a_template.md).
 
 #### 5. PlatformUI integration
 
 Viewing and editing values of the Field Type in PlatformUI requires that you extend PlatformUI, using mostly JavaScript.
 
-You should ideally read the general [extensibility documentation for PlatformUI](https://doc.ez.no/display/DEVELOPER/Extending+eZ+Platform+UI). You can find information about view templates [in the next tutorial](https://doc.ez.no/display/DEVELOPER/Define+a+View). Edit templates are not documented at the time of writing, but [Netgen](http://www.netgenlabs.com/) has published a tutorial that covers the topic: (http://www.netgenlabs.com/Blog/Adding-support-for-a-new-field-type-to-eZ-Publish-Platform-UI).
+You should ideally read the general [extensibility documentation for PlatformUI](https://doc.ezplatform.com/en/latest/guide/extending_ez_platform_ui/). You can find information about view templates [in the next tutorial](https://doc.ezplatform.com/en/latest/tutorials/extending_platformui/extending_platformui_with_new_navigation/). Edit templates are not documented at the time of writing, but [Netgen](http://www.netgenlabs.com/) has published a tutorial that covers the topic: (http://www.netgenlabs.com/Blog/Adding-support-for-a-new-field-type-to-eZ-Publish-Platform-UI).
 
 ![Final result of the tutorial](images/fieldtype_tutorial_result.png)
+
+[Start the tutorial](build_the_bundle.md) ➡
