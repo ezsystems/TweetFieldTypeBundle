@@ -20,7 +20,6 @@ class EzSystemsTweetFieldTypeExtension extends Extension implements PrependExten
     {
         $configDirectoryPath = __DIR__.'/../Resources/config';
 
-        $this->prependYamlConfigFile($container, 'ez_platformui', $configDirectoryPath.'/yui.yml');
         $this->prependYamlConfigFile($container, 'ezpublish', $configDirectoryPath.'/ez_field_templates.yml');
     }
 
