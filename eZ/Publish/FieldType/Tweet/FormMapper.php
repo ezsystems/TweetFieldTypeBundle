@@ -18,8 +18,16 @@ use Symfony\Component\Form\FormInterface;
 use EzSystems\RepositoryForms\FieldType\FieldValueFormMapperInterface;
 use eZ\Publish\API\Repository\FieldTypeService;
 
-class FormMapper implements FieldDefinitionFormMapperInterface
+class FormMapper implements FieldDefinitionFormMapperInterface, FieldValueFormMapperInterface
 {
+    /** @var FieldTypeService */
+    private $fieldTypeService;
+
+    public function __construct(FieldTypeService $fieldTypeService)
+    {
+        $this->fieldTypeService = $fieldTypeService;
+    }
+
     /**
      * @param FormInterface $fieldDefinitionForm
      * @param FieldDefinitionData $data
@@ -41,6 +49,40 @@ class FormMapper implements FieldDefinitionFormMapperInterface
                         'label' => 'field_definition.eztweet.authorList'
                     ])
                     ->addModelTransformer(new StringToArrayTransformer())
+                    // Deactivate auto-initialize as we're not on the root form.
+                    ->setAutoInitialize(false)
+                    ->getForm()
+            );
+    }
+
+    /**
+     * @param FormInterface $fieldForm
+     * @param FieldData $data
+     * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws \Symfony\Component\Form\Exception\AlreadySubmittedException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     */
+    public function mapFieldValueForm(FormInterface $fieldForm, FieldData $data)
+    {
+        $fieldDefinition = $data->fieldDefinition;
+        $formConfig = $fieldForm->getConfig();
+        $names = $fieldDefinition->getNames();
+        $label = $fieldDefinition->getName($formConfig->getOption('mainLanguageCode')) ?: reset($names);
+        $fieldType = $this->fieldTypeService->getFieldType($fieldDefinition->fieldTypeIdentifier);
+        $fieldForm
+            ->add(
+                $formConfig->getFormFactory()->createBuilder()
+                    ->create(
+                        'value',
+                        TextType::class,
+                        [
+                            'required' => false,
+                            'label' => $label
+                        ]
+                    )
+                    ->addModelTransformer(new TweetValueTransformer($fieldType))
                     // Deactivate auto-initialize as we're not on the root form.
                     ->setAutoInitialize(false)
                     ->getForm()
