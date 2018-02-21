@@ -16,3 +16,5 @@ services:
         class: EzSystems\TweetFieldTypeBundle\eZ\Publish\FieldType\Tweet\FormMapper
         tags:
             - {name: ez.fieldFormMapper.definition, fieldType: eztweet}
+            - {name: ez.fieldFormMapper.value, fieldType: eztweet}
+        arguments: ['@ezpublish.api.service.field_type']
