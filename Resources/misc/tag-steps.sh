@@ -1,26 +1,24 @@
 #!/bin/bash
 
 declare -a commits=(
-    "Create the bundle"
     "Structure the bundle"
     "Implement the Tweet\\\Value class"
-    "Implement the Tweet\\\Type class"
+    "Tests for the Tweet\\\Type class"
     "Register the Field Type as a service"
-    "Implement the Legacy Storage Engine Converter"
+    "SPI Integration Tests"
     "Add field view and field definition view templates"
     "Add content and edit views"
-    "Add a validation"
+    "Tests for the validation"
     )
 declare -a tags=(
     "step1_create_the_bundle_v2"
-    "step2_structure_the_bundle_v2"
-    "step3_implement_the_tweet_value_class_v2"
-    "step4_implement_the_tweet_type_class_v2"
-    "step5_register_the_field_type_as_a_service_v2"
-    "step6_implement_the_legacy_storage_engine_converter_v2"
-    "step7_add_field_view_and_field_definition_view_templates_v2"
-    "step8_add_content_and_edit_views_v2"
-    "step9_add_a_validation_v2"
+    "step2_implement_the_tweet_value_class_v2"
+    "step3_implement_the_tweet_type_class_v2"
+    "step4_register_the_field_type_as_a_service_v2"
+    "step5_implement_the_legacy_storage_engine_converter_v2"
+    "step6_introduce_a_template_v2"
+    "step7_allow_adding_and_editing_v2"
+    "step8_add_a_validation_v2"
     )
 
 numberOfCommits=${#commits[@]}
