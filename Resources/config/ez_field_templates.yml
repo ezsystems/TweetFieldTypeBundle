@@ -6,3 +6,6 @@ system:
             - {template: EzSystemsTweetFieldTypeBundle:platformui/content_type/view:eztweet.html.twig, priority: 0}
         fielddefinition_edit_templates:
             - {template: EzSystemsTweetFieldTypeBundle:platformui/content_type/edit:eztweet.html.twig, priority: 0}
+    admin_group:
+        field_templates:
+            - {template: EzSystemsTweetFieldTypeBundle:fields:eztweet.html.twig, priority: 0}
